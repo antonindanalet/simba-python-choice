@@ -1,0 +1,1 @@
+"""Estimating a discrete choice model for the ownership of public transport subscriptions for individuals (alternatives: GA, half fare, regional travelcard, half fare and regional travelcard, none of the list)."""
