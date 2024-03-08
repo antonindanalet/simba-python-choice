@@ -11,14 +11,16 @@ from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_hhp
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_zp
 
 
-def get_data(path_to_input) -> pd.DataFrame:
+def get_data(
+    path_to_input: Path, path_to_mtmc_data: Path, path_to_mobi_zones: Path
+) -> pd.DataFrame:
     if os.path.isdir(path_to_input) is False:
         path_to_input.mkdir(parents=True, exist_ok=True)
     if os.path.isfile(path_to_input / "zp_mtmc_2015_2021.csv"):
         df_zp = pd.read_csv(path_to_input)
     else:
-        df_zp_2015 = get_data_per_year(2015)
-        df_zp_2021 = get_data_per_year(2021)
+        df_zp_2015 = get_data_per_year(2015, path_to_mtmc_data)
+        df_zp_2021 = get_data_per_year(2021, path_to_mtmc_data)
         df_zp = pd.concat([df_zp_2015, df_zp_2021])
         # Rename variables
         df_zp = df_zp.rename(
@@ -38,9 +40,6 @@ def get_data(path_to_input) -> pd.DataFrame:
 
         df_zp = df_zp.drop(columns=["ERWERB", "nation"])
 
-        path_to_mobi_zones = Path(
-            r"path_to\mobi-zones.shp"
-        )
         df_zp = add_mobi_variables(
             df_zp,
             path_to_mobi_zones,
@@ -57,9 +56,7 @@ def get_data(path_to_input) -> pd.DataFrame:
     return df_zp
 
 
-def get_data_per_year(year) -> pd.DataFrame:
-    path_to_mtmc = Path(r"path_to_transport_and_mobility_microcensus_folder")
-
+def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
     # Load row data of the Mobility and Transpot Microcensus (MTMC)
     if year == 2015:
         selected_columns = [
@@ -87,7 +84,7 @@ def get_data_per_year(year) -> pd.DataFrame:
         ]  # Verbundabo
     else:
         raise ValueError("Year not well defined! It must be 2015 or 2021...")
-    df_zp = get_zp(year, path_to_mtmc, selected_columns=selected_columns)
+    df_zp = get_zp(year, path_to_mtmc_data, selected_columns=selected_columns)
     df_zp = df_zp.rename(
         columns={
             "f41610a": "GA_ticket",
@@ -113,12 +110,12 @@ def get_data_per_year(year) -> pd.DataFrame:
             "f30100",
             "W_stadt_land_2012",
         ]
-    df_hh = get_hh(year, path_to_mtmc, selected_columns=selected_columns)
+    df_hh = get_hh(year, path_to_mtmc_data, selected_columns=selected_columns)
     if year == 2015:
         df_hh = add_urban_typology(df_hh)
         df_hh = df_hh.drop("W_BFS", axis=1)
     df_hh["year"] = year
-    df_hhp = get_hhp(year, path_to_mtmc, selected_columns=["HHNR", "alter"])
+    df_hhp = get_hhp(year, path_to_mtmc_data, selected_columns=["HHNR", "alter"])
     df_hhp = df_hhp.rename(columns={"alter": "age"})
     df_hhp["is_adult"] = np.where(df_hhp.age < 18, 0, 1)
     df_hhp = df_hhp.drop(columns=["age"])

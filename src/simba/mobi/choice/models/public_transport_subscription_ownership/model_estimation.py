@@ -12,6 +12,7 @@ from simba.mobi.choice.models.public_transport_subscription_ownership.model_defi
 from simba.mobi.choice.models.public_transport_subscription_ownership.model_definition import (
     get_dict_betas,
 )
+from simba.mobi.choice.utils.biogeme import estimate_in_directory
 
 
 def estimate_model(df, output_directory) -> None:
@@ -452,8 +453,6 @@ def estimate_model(df, output_directory) -> None:
 
     logprob = models.loglogit(V, av, subscriptions)
 
-    # Change the working directory, so that biogeme writes in the correct folder
-    standard_directory = os.getcwd()
     if estimate_2015:
         output_directory_for_a_specific_year = output_directory / "2015"
     elif estimate_2021:
@@ -462,13 +461,13 @@ def estimate_model(df, output_directory) -> None:
         output_directory_for_a_specific_year = output_directory / "2015_2021"
     if os.path.isdir(output_directory_for_a_specific_year) is False:
         output_directory_for_a_specific_year.mkdir(parents=True, exist_ok=True)
-    os.chdir(output_directory_for_a_specific_year)
+    the_biogeme = bio.BIOGEME(database, logprob)
+    the_biogeme.modelName = "dcm_indivPT"
 
-    biogeme = bio.BIOGEME(database, logprob)
-    biogeme.modelName = "dcm_indivPT"
-    results = biogeme.estimate()
+    # Calculate the null log likelihood for reporting.
+    the_biogeme.calculateNullLoglikelihood(av)
+
+    results = estimate_in_directory(the_biogeme, output_directory_for_a_specific_year)
+
     df_parameters = results.getEstimatedParameters()
     df_parameters.to_csv("parameters_dcm_pt_abo.csv")
-
-    # Go back to the normal working directory
-    os.chdir(standard_directory)
