@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from simba.mobi.choice.utils.mobi import add_mobi_variables
+from simba.mobi.mzmv.utils2015 import add_mobi_variables
 from simba.mobi.choice.utils.mtmc import add_urban_typology
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_hh
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_hhp
