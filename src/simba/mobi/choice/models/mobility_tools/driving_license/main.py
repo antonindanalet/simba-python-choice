@@ -1,11 +1,15 @@
 from pathlib import Path
 
-from simba.mobi.choice.models.driving_license.data_loader import get_data
-from simba.mobi.choice.models.driving_license.descriptive_stats import visualize_cost
-from simba.mobi.choice.models.driving_license.descriptive_stats import (
+from simba.mobi.choice.models.mobility_tools.driving_license.data_loader import get_data
+from simba.mobi.choice.models.mobility_tools.driving_license.descriptive_stats import (
+    visualize_cost,
+)
+from simba.mobi.choice.models.mobility_tools.driving_license.descriptive_stats import (
     visualize_piecewise_age,
 )
-from simba.mobi.choice.models.driving_license.model_estimation import estimate_model
+from simba.mobi.choice.models.mobility_tools.driving_license.model_estimation import (
+    estimate_model,
+)
 
 
 def driving_licence_choice() -> None:

@@ -1,4 +1,74 @@
 """Defines some metadata of the Mobility and Transport Microcensus 2015."""
+
+dict_mobi_names2mzmv_codes_zp_2015 = {
+    "has_ga": "f41610a",
+    "has_hta": "f41610b",
+    "has_va": "f41610c",
+    "has_driving_licence": "f20400a",
+    "day_of_the_week": "tag",
+    "employment_status": "f40800_01",
+    "highest_education": "HAUSB",
+    "other_activity_1_on_top_of_job": "f41000a",
+    "other_activity_2_on_top_of_job": "f41000b",
+    "other_activity_3_on_top_of_job": "f41000c",
+    "activity_1_if_not_working": "f41001a",
+    "activity_2_if_not_working": "f41001b",
+    "activity_3_if_not_working": "f41001c",
+}
+
+dict_mobi_names2mzmv_codes_hh_2015 = {
+    "nb_of_cars": "f30100",
+}
+
+dict_main_mode2mobi_mode_2015 = {
+    1: "other",  # Flugzeug
+    2: "pt",  # Bahn
+    3: "pt",  # Postauto
+    4: "pt",  # Schiff
+    5: "pt",  # Tram
+    6: "pt",  # Bus
+    7: "pt",  # sonstiger OeV
+    8: "other",  # Reisecar
+    9: "car",  # Auto
+    10: "car",  # Lastwagen
+    11: "ride",  # Taxi
+    12: "car",  # Motorrad
+    13: "car",  # Mofa
+    14: "bike",  # Velo, E-Bike
+    15: "walk",  # zu Fuss
+    16: "other",  # Fahrzeugaehnliche Geraete
+    17: "other",  # Anderes
+    -99: "other",  # enthält Pseudoetappe
+}
+
+dict_detailed_mode2mobi_mode_2015 = {
+    1: "walk",  # Zu Fuss -> LV
+    2: "bike",  # Velo -> LV
+    3: "car",  # Mofa, Motorfahrrad
+    4: "car",  # Kleinmotorrad
+    5: "car",  # Motorrad als Fahrer
+    6: "ride",  # Motorrad als Mitfahrer
+    7: "car",  # Auto als Fahrer
+    8: "ride",  # Auto als Mitfahrer
+    9: "pt",  # Bahn/Zug
+    10: "pt",  # Postauto
+    11: "pt",  # Bus/Schulbus
+    12: "pt",  # Tram/Metro
+    13: "ride",  # Taxi
+    14: "other",  # Reisecar
+    15: "car",  # Lastwagen
+    16: "other",  # Schiff, Boot
+    17: "other",  # Flugzeug / Luftfahrzeug
+    18: "other",  # Zahnradbahn, Standseilbahn, Seilbahn, Sessellift, Skilift
+    19: "other",  # Fahrzeugaehnliche Geraete
+    20: "bike",  # E-Bike ohne Kontrollschild
+    21: "bike",  # E-Bike mit gelbem Kontrollschild
+    95: "other",  # Anderes
+    -99: "other",  # Pseudoetappe
+    -98: "other",  # Keine Antwort
+    -97: "other",  # Weiss nicht
+}
+
 code2country = {
     8201: "ALBANIEN",
     8202: "ANDORRA",

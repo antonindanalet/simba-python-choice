@@ -6,8 +6,12 @@ import biogeme.models as models
 from biogeme.expressions import bioMax
 from biogeme.expressions import bioMin
 
-from simba.mobi.choice.models.driving_license.model_definition import define_variables
-from simba.mobi.choice.models.driving_license.model_definition import get_dict_betas
+from simba.mobi.choice.models.mobility_tools.driving_license.model_definition import (
+    define_variables,
+)
+from simba.mobi.choice.models.mobility_tools.driving_license.model_definition import (
+    get_dict_betas,
+)
 from simba.mobi.choice.utils.biogeme import estimate_in_directory
 
 

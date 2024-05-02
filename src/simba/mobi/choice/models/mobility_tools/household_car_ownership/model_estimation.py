@@ -4,10 +4,10 @@ import biogeme.biogeme as bio
 import biogeme.database as db
 import biogeme.models as models
 
-from simba.mobi.choice.models.household_car_ownership.model_definition import (
+from simba.mobi.choice.models.mobility_tools.household_car_ownership.model_definition import (
     define_variables,
 )
-from simba.mobi.choice.models.household_car_ownership.model_definition import (
+from simba.mobi.choice.models.mobility_tools.household_car_ownership.model_definition import (
     get_dict_betas,
 )
 from simba.mobi.choice.utils.biogeme import estimate_in_directory

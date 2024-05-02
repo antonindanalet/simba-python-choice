@@ -4,8 +4,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from simba.mobi.mzmv.utils2015 import add_mobi_variables
-from simba.mobi.choice.utils.mtmc import add_urban_typology
+from simba.mobi.choice.utils.mobi import add_mobi_variables
+from simba.mobi.mzmv.utils2015.add_urban_typology import add_urban_typology
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_hh
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_hhp
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_zp
@@ -17,7 +17,7 @@ def get_data(
     if os.path.isdir(path_to_input) is False:
         path_to_input.mkdir(parents=True, exist_ok=True)
     if os.path.isfile(path_to_input / "zp_mtmc_2015_2021.csv"):
-        df_zp = pd.read_csv(path_to_input)
+        df_zp = pd.read_csv(path_to_input / "zp_mtmc_2015_2021.csv")
     else:
         df_zp_2015 = get_data_per_year(2015, path_to_mtmc_data)
         df_zp_2021 = get_data_per_year(2021, path_to_mtmc_data)
@@ -52,7 +52,7 @@ def get_data(
         df_zp["driving_licence"].replace({2: 0}, inplace=True)  # 0: no, 1: yes
 
         df_zp.fillna(0, inplace=True)
-        df_zp.to_csv(path_to_input / "zp_mtmc_2015_2021", index=False)
+        df_zp.to_csv(path_to_input / "zp_mtmc_2015_2021.csv", index=False)
     return df_zp
 
 

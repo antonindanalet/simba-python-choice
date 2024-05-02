@@ -6,10 +6,10 @@ import biogeme.models as models
 from biogeme.expressions import bioMax
 from biogeme.expressions import bioMin
 
-from simba.mobi.choice.models.public_transport_subscription_ownership.model_definition import (
+from simba.mobi.choice.models.mobility_tools.public_transport_subscription_ownership_adults.model_definition import (
     define_variables,
 )
-from simba.mobi.choice.models.public_transport_subscription_ownership.model_definition import (
+from simba.mobi.choice.models.mobility_tools.public_transport_subscription_ownership_adults.model_definition import (
     get_dict_betas,
 )
 from simba.mobi.choice.utils.biogeme import estimate_in_directory

@@ -156,7 +156,7 @@ def get_dict_betas(
 ) -> dict:
     # General betas
     dict_betas = {
-        "ASC_NONE": Beta("ASC_NONE ", 0, None, None, 1),
+        "ASC_NONE": Beta("ASC_NONE", 0, None, None, 1),
         "ASC_GA": Beta("ASC_GA", 0, None, None, 0),
         "ASC_HT": Beta("ASC_HT", 0, None, None, 0),
         "ASC_V": Beta("ASC_V", 0, None, None, 0),
