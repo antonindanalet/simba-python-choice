@@ -18,7 +18,7 @@ def driving_licence_choice() -> None:
     )
     path_to_mtmc = Path(r"path_to_transport_and_mobility_microcensus_folder")
 
-    data_directory = Path(Path(__file__).parent.parent.parent.joinpath("data"))
+    data_directory = Path(Path(__file__).parent.parent.parent.parent.joinpath("data"))
     input_directory = data_directory.joinpath("input").joinpath("driving_license")
     input_directory.mkdir(parents=True, exist_ok=True)
     output_directory = data_directory.joinpath("output").joinpath("driving_license")

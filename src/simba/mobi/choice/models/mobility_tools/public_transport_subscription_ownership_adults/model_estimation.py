@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import biogeme.biogeme as bio
 import biogeme.database as db
@@ -53,6 +54,8 @@ def estimate_model(df, output_directory) -> None:
         V_GA = (
             dict_betas["ASC_GA"]
             + dict_betas["b_CARS_PER_ADULT_GA1521"] * cars_per_adult15
+            + dict_betas["b_NB_CARS_HH_GA_V1521"] * nb_cars_not_NA15
+            + dict_betas["b_NB_CARS_HH_GA_V_NA1521"] * nb_cars_NA15
             + dict_betas["b_LANG_GERMAN_GA1521"] * german15
             + dict_betas["b_is_swiss_GA1521"] * is_swiss15
             + dict_betas["b_FULLTIME_GA1521"] * full_time15
@@ -74,6 +77,8 @@ def estimate_model(df, output_directory) -> None:
             + dict_betas["mu_2021"]
             * (
                 dict_betas["b_CARS_PER_ADULT_GA1521"] * cars_per_adult21
+                + dict_betas["b_NB_CARS_HH_GA_V1521"] * nb_cars_not_NA21
+                + dict_betas["b_NB_CARS_HH_GA_V_NA1521"] * nb_cars_NA21
                 + dict_betas["b_LANG_GERMAN_GA1521"] * german21
                 + dict_betas["b_is_swiss_GA1521"] * is_swiss21
                 + dict_betas["b_FULLTIME_GA1521"] * full_time21
@@ -145,8 +150,8 @@ def estimate_model(df, output_directory) -> None:
         V_V = (
             dict_betas["ASC_V"]
             + dict_betas["b_CARS_PER_ADULT_V1521"] * cars_per_adult15
-            + dict_betas["b_NB_CARS_HH_V1521"] * nb_cars_not_NA15
-            + dict_betas["b_NB_CARS_HH_V_NA1521"] * nb_cars_NA15
+            + dict_betas["b_NB_CARS_HH_GA_V1521"] * nb_cars_not_NA15
+            + dict_betas["b_NB_CARS_HH_GA_V_NA1521"] * nb_cars_NA15
             + dict_betas["b_PARTTIME_V1521"] * part_time15
             + dict_betas["b_LANG_GERMAN_V1521"] * german15
             + dict_betas["b_is_swiss_V15"] * is_swiss15
@@ -166,8 +171,8 @@ def estimate_model(df, output_directory) -> None:
             + dict_betas["mu_2021"]
             * (
                 dict_betas["b_CARS_PER_ADULT_V1521"] * cars_per_adult21
-                + dict_betas["b_NB_CARS_HH_V1521"] * nb_cars_not_NA21
-                + dict_betas["b_NB_CARS_HH_V_NA1521"] * nb_cars_NA21
+                + dict_betas["b_NB_CARS_HH_GA_V1521"] * nb_cars_not_NA21
+                + dict_betas["b_NB_CARS_HH_GA_V_NA1521"] * nb_cars_NA21
                 + dict_betas["b_PARTTIME_V1521"] * part_time21
                 + dict_betas["b_LANG_GERMAN_V1521"] * german21
                 + dict_betas["b_is_swiss_V21"] * is_swiss21
@@ -466,8 +471,3 @@ def estimate_model(df, output_directory) -> None:
 
     # Calculate the null log likelihood for reporting.
     the_biogeme.calculateNullLoglikelihood(av)
-
-    results = estimate_in_directory(the_biogeme, output_directory_for_a_specific_year)
-
-    df_parameters = results.getEstimatedParameters()
-    df_parameters.to_csv("parameters_dcm_pt_abo.csv")

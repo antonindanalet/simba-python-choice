@@ -4,6 +4,9 @@ from simba.mobi.choice.models.mobility_tools.public_transport_subscription_owner
     get_data,
 )
 from simba.mobi.choice.models.mobility_tools.public_transport_subscription_ownership_adults.descriptive_stats import (
+    distribution_half_fare_regional_travelcards,
+)
+from simba.mobi.choice.models.mobility_tools.public_transport_subscription_ownership_adults.descriptive_stats import (
     visualize_piecewise_age,
 )
 from simba.mobi.choice.models.mobility_tools.public_transport_subscription_ownership_adults.model_estimation import (
@@ -27,6 +30,7 @@ def public_transport_subscription_ownership() -> None:
     output_directory.mkdir(parents=True, exist_ok=True)
     estimate_model(df_zp, output_directory)
     visualize_piecewise_age(output_directory)
+    distribution_half_fare_regional_travelcards(path_to_mtmc)
 
 
 if __name__ == "__main__":

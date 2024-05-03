@@ -10,7 +10,7 @@ def add_urban_typology(df: pd.DataFrame) -> pd.DataFrame:
     More info: https://www.bfs.admin.ch/asset/de/2544676
     The typology defines three levels (urban, rural and "intermediate")."""
     input_directory = Path(
-        r"\\path_to\2015\Raumgliederungen.xlsx"
+        r"\\wsbbrz0283\mobi\10_Daten\Raumgliederungen\2015\Raumgliederungen.xlsx"
     )
     urban_rural_typology = pd.read_excel(
         input_directory,

@@ -5,10 +5,12 @@ import geopandas
 import numpy as np
 import openmatrix as omx
 import pandas as pd
-from model_definition import define_telecommuting_variable
 
 from simba.mobi.choice.models.homeoffice.constants import hh_columns
 from simba.mobi.choice.models.homeoffice.constants import zp_columns
+from simba.mobi.choice.models.homeoffice.model_definition import (
+    define_telecommuting_variable,
+)
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_hh
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_hhp
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_zp
@@ -52,10 +54,20 @@ def get_data_per_year(
     year: int, input_directory: Path, path_to_mtmc_data: Path
 ) -> pd.DataFrame:
     # Input daten
-    path_to_mobi_zones = r"\\path_to\mobi-zones-folder"
-    path_to_npvm_zones = r"\\path_to\Verkehrszonen_Schweiz_NPVM_2017_zone_id.gpkg"
-    path_to_typology = r"\\path_to\Raumgliederungen_file_from_Statistical_Office"
-    path_to_skim_file = r"\\path_to\mobi-skim-folder"
+    path_to_mobi_server = Path(r"\\wsbbrz0283\mobi")
+    path_to_mobi_zones = (
+        path_to_mobi_server / r"50_Ergebnisse\MOBi_3.1\plans\3.1.4.2020"
+    )
+    path_to_npvm_zones = (
+        path_to_mobi_server.joinpath("10_Daten")
+        .joinpath("NPVM_Zonen")
+        .joinpath("Verkehrszonen_Schweiz_NPVM_2017")
+        .joinpath("Verkehrszonen_Schweiz_NPVM_2017_zone_id.gpkg")
+    )
+    path_to_typology = path_to_mobi_server / r"10_Daten\Raumgliederungen"
+    path_to_skim_file = (
+        path_to_mobi_server / r"50_Ergebnisse/MOBi_3.2/plans/3.2_2017_10pct/"
+    )
     # Data file for estimation, information about saving a file for a specific year
     path_to_data_file_for_a_year = input_directory / str(year)
     # path_to_data_file_for_a_year.mkdir(parents=True, exist_ok=True)

@@ -1,5 +1,6 @@
 import biogeme
 from biogeme.expressions import Beta
+from biogeme.expressions import bioMax
 from biogeme.expressions import Variable
 
 
@@ -52,11 +53,15 @@ def define_variables(database: biogeme.database.Database) -> None:
     )
 
     nb_cars_not_NA15 = database.DefineVariable(
-        "nb_cars_not_NA15", ((nb_cars >= 0) * nb_cars) * year15
+        "nb_cars_not_NA15",
+        ((nb_cars >= 0) * nb_cars) * year15
+        # "nb_cars_not_NA15", ((nb_cars >= 0) * bioMax(nb_cars, 3)) * year15
     )
     nb_cars_NA15 = database.DefineVariable("nb_cars_NA15", (nb_cars < 0) * year15)
     nb_cars_not_NA21 = database.DefineVariable(
-        "nb_cars_not_NA21", ((nb_cars >= 0) * nb_cars) * year21
+        "nb_cars_not_NA21",
+        ((nb_cars >= 0) * nb_cars) * year21
+        # "nb_cars_not_NA21", ((nb_cars >= 0) * bioMax(nb_cars, 3)) * year21
     )
     nb_cars_NA21 = database.DefineVariable("nb_cars_NA21", (nb_cars < 0) * year21)
 
@@ -157,10 +162,10 @@ def get_dict_betas(
     # General betas
     dict_betas = {
         "ASC_NONE": Beta("ASC_NONE", 0, None, None, 1),
-        "ASC_GA": Beta("ASC_GA", 0, None, None, 0),
-        "ASC_HT": Beta("ASC_HT", 0, None, None, 0),
-        "ASC_V": Beta("ASC_V", 0, None, None, 0),
-        "ASC_HTV": Beta("ASC_HTV", 0, None, None, 0),
+        "ASC_GA": Beta("ASC_GA", 1.53, None, None, 0),
+        "ASC_HT": Beta("ASC_HT", 2.06, None, None, 0),
+        "ASC_V": Beta("ASC_V", 6.68, None, None, 0),
+        "ASC_HTV": Beta("ASC_HTV", 5.65, None, None, 0),
     }
     if estimate_2015:
         print("Using 2015 betas...")
@@ -751,159 +756,193 @@ def get_dict_betas(
 
         dict_betas["mu_2021"] = Beta("mu_2021", 1, None, None, 1)
     elif estimate_2015_2021:
-        dict_betas["mu_2021"] = Beta("mu_2021", 1, None, None, 0)
+        dict_betas["mu_2021"] = Beta("mu_2021", 1.03, None, None, 0)
 
         dict_betas["b_CARS_PER_ADULT_GA1521"] = Beta(
-            "B_CARS_PER_ADULT_GA1521", 0, None, None, 0
+            "B_CARS_PER_ADULT_GA1521", -1.75, None, None, 0
         )
         dict_betas["b_CARS_PER_ADULT_V1521"] = Beta(
-            "B_CARS_PER_ADULT_V1521", 0, None, None, 0
+            "B_CARS_PER_ADULT_V1521", -1.51, None, None, 0
         )
         dict_betas["b_CARS_PER_ADULT_HTV1521"] = Beta(
-            "B_CARS_PER_ADULT_HTV1521", 0, None, None, 0
+            "B_CARS_PER_ADULT_HTV1521", -1.39, None, None, 0
         )
 
-        dict_betas["b_OWNS_DL_NONE1521"] = Beta("B_OWNS_DL_NONE1521", 0, None, None, 0)
+        dict_betas["b_OWNS_DL_NONE1521"] = Beta(
+            "B_OWNS_DL_NONE1521", 0.215, None, None, 0
+        )
         dict_betas["b_OWNS_DL_NONE_NA1521"] = Beta(
-            "B_OWNS_DL_NONE_NA1521", 0, None, None, 0
+            "B_OWNS_DL_NONE_NA1521", 0.522, None, None, 0
         )
 
         dict_betas["b_NB_CARS_HH_HT_ALL1521"] = Beta(
-            "B_NB_CARS_HH_HT_ALL1521", 0, None, None, 0
+            "B_NB_CARS_HH_HT_ALL1521", -0.243, None, None, 0
         )
         dict_betas["b_NB_CARS_HH_HT_ALL_NA1521"] = Beta(
-            "B_NB_CARS_HH_HT_ALL_NA1521", 0, None, None, 0
+            "B_NB_CARS_HH_HT_ALL_NA1521", -0.801, None, None, 0
         )
-        dict_betas["b_NB_CARS_HH_V1521"] = Beta("B_NB_CARS_HH_V1521", 0, None, None, 0)
-        dict_betas["b_NB_CARS_HH_V_NA1521"] = Beta(
-            "B_NB_CARS_HH_V_NA1521", 0, None, None, 0
+        dict_betas["b_NB_CARS_HH_GA_V1521"] = Beta(
+            "B_NB_CARS_HH_GA_V1521", -0.133, None, None, 0
+        )
+        dict_betas["b_NB_CARS_HH_GA_V_NA1521"] = Beta(
+            "B_NB_CARS_HH_GA_V_NA1521", -0.142, None, None, 0
         )
 
         dict_betas["b_LANG_GERMAN_GA1521"] = Beta(
-            "B_LANG_GERMAN_GA1521", 0, None, None, 0
+            "B_LANG_GERMAN_GA1521", 0.887, None, None, 0
         )
         dict_betas["b_LANG_GERMAN_HT1521"] = Beta(
-            "B_LANG_GERMAN_HT1521", 0, None, None, 0
+            "B_LANG_GERMAN_HT1521", 0.838, None, None, 0
         )
         dict_betas["b_LANG_GERMAN_V1521"] = Beta(
-            "B_LANG_GERMAN_V1521", 0, None, None, 0
+            "B_LANG_GERMAN_V1521", -0.208, None, None, 0
         )
         dict_betas["b_LANG_GERMAN_HTV15"] = Beta(
-            "B_LANG_GERMAN_HTV15", 0, None, None, 0
+            "B_LANG_GERMAN_HTV15", 0.891, None, None, 0
         )
 
         dict_betas["b_ACCESSIB_CAR_NONE15"] = Beta(
-            "B_ACCESSIB_CAR_NONE15", 0, None, None, 0
+            "B_ACCESSIB_CAR_NONE15", 1.41, None, None, 0
         )
         dict_betas["b_ACCESSIB_MULTI_NONE15"] = Beta(
-            "B_ACCESSIB_MULTI_NONE15", 0, None, None, 0
+            "B_ACCESSIB_MULTI_NONE15", -1.98, None, None, 0
         )
         dict_betas["b_ACCESSIB_PT_HT1521"] = Beta(
             "B_ACCESSIB_PT_HT1521", 0, None, None, 0
         )
         dict_betas["b_ACCESSIB_PT_HTV15"] = Beta(
-            "B_ACCESSIB_PT_HTV15", 0, None, None, 0
+            "B_ACCESSIB_PT_HTV15", -0.332, None, None, 0
         )
 
-        dict_betas["b_is_swiss_GA1521"] = Beta("B_is_swiss_GA1521", 0, None, None, 0)
-        dict_betas["b_is_swiss_HT15"] = Beta("B_is_swiss_HT15", 0, None, None, 0)
+        dict_betas["b_is_swiss_GA1521"] = Beta("B_is_swiss_GA1521", 1.16, None, None, 0)
+        dict_betas["b_is_swiss_HT15"] = Beta("B_is_swiss_HT15", 0.833, None, None, 0)
         dict_betas["b_is_swiss_V15"] = Beta("B_is_swiss_V15", 0, None, None, 1)
-        dict_betas["b_is_swiss_htv1521"] = Beta("b_is_swiss_htv1521", 0, None, None, 0)
+        dict_betas["b_is_swiss_htv1521"] = Beta(
+            "b_is_swiss_htv1521", 0.913, None, None, 0
+        )
 
-        dict_betas["b_URBAN_V_ALL1521"] = Beta("B_URBAN_V_ALL1521", 0, None, None, 0)
+        dict_betas["b_URBAN_V_ALL1521"] = Beta(
+            "B_URBAN_V_ALL1521", 0.201, None, None, 0
+        )
 
-        dict_betas["b_FULLTIME_GA1521"] = Beta("B_FULLTIME_GA1521", 0, None, None, 0)
-        dict_betas["b_FULLTIME_HTV1521"] = Beta("B_FULLTIME_HTV1521", 0, None, None, 0)
+        dict_betas["b_FULLTIME_GA1521"] = Beta(
+            "B_FULLTIME_GA1521", 0.172, None, None, 0
+        )
+        dict_betas["b_FULLTIME_HTV1521"] = Beta(
+            "B_FULLTIME_HTV1521", 0.19, None, None, 0
+        )
 
-        dict_betas["b_PARTTIME_GA1521"] = Beta("B_PARTTIME_GA1521", 0, None, None, 0)
+        dict_betas["b_PARTTIME_GA1521"] = Beta("B_PARTTIME_GA1521", 0.19, None, None, 0)
         dict_betas["b_PARTTIME_HT_ALL1521"] = Beta(
-            "B_PARTTIME_HT_ALL1521", 0, None, None, 0
+            "B_PARTTIME_HT_ALL1521", 0.335, None, None, 0
         )
-        dict_betas["b_PARTTIME_V1521"] = Beta("B_PARTTIME_V1521", 0, None, None, 0)
+        dict_betas["b_PARTTIME_V1521"] = Beta("B_PARTTIME_V1521", 0.281, None, None, 0)
 
-        dict_betas["b_AGE_18_22_GA1521"] = Beta("B_AGE_18_22_GA1521", 0, None, None, 0)
-        dict_betas["b_AGE_23_26_GA1521"] = Beta("B_AGE_23_26_GA1521", 0, None, None, 0)
-        dict_betas["b_AGE_27_69_GA1521"] = Beta("B_AGE_27_69_GA1521", 0, None, None, 0)
-        dict_betas["b_AGE_70_89_GA1521"] = Beta("B_AGE_70_89_GA1521", 0, None, None, 0)
+        dict_betas["b_AGE_18_22_GA1521"] = Beta(
+            "B_AGE_18_22_GA1521", -0.0945, None, None, 0
+        )
+        dict_betas["b_AGE_23_26_GA1521"] = Beta(
+            "B_AGE_23_26_GA1521", -0.346, None, None, 0
+        )
+        dict_betas["b_AGE_27_69_GA1521"] = Beta(
+            "B_AGE_27_69_GA1521", -0.00619, None, None, 0
+        )
+        dict_betas["b_AGE_70_89_GA1521"] = Beta(
+            "B_AGE_70_89_GA1521", -0.0336, None, None, 0
+        )
         dict_betas["b_AGE_90_plus_GA1521"] = Beta(
-            "B_AGE_90_plus_GA1521", 0, None, None, 0
+            "B_AGE_90_plus_GA1521", -0.202, None, None, 0
         )
-        dict_betas["b_AGE_18_22_HT1521"] = Beta("B_AGE_18_22_HT1521", 0, None, None, 0)
-        dict_betas["b_AGE_23_26_HT15"] = Beta("B_AGE_23_26_HT15", 0, None, None, 0)
-        dict_betas["b_AGE_27_69_HT15"] = Beta("B_AGE_27_69_HT15", 0, None, None, 0)
-        dict_betas["b_AGE_70_89_HT1521"] = Beta("B_AGE_70_89_HT1521", 0, None, None, 0)
+        dict_betas["b_AGE_18_22_HT1521"] = Beta(
+            "B_AGE_18_22_HT1521", -0.168, None, None, 0
+        )
+        dict_betas["b_AGE_23_26_HT15"] = Beta(
+            "B_AGE_23_26_HT15", -0.0419, None, None, 0
+        )
+        dict_betas["b_AGE_27_69_HT15"] = Beta("B_AGE_27_69_HT15", 0.0101, None, None, 0)
+        dict_betas["b_AGE_70_89_HT1521"] = Beta(
+            "B_AGE_70_89_HT1521", -0.0393, None, None, 0
+        )
         dict_betas["b_AGE_90_plus_HT1521"] = Beta(
-            "B_AGE_90_plus_HT1521", 0, None, None, 0
+            "B_AGE_90_plus_HT1521", -0.331, None, None, 0
         )
-        dict_betas["b_AGE_18_22_V1521"] = Beta("B_AGE_18_22_V1521", 0, None, None, 0)
-        dict_betas["b_AGE_23_26_V1521"] = Beta("B_AGE_23_26_V1521", 0, None, None, 0)
-        dict_betas["b_AGE_27_69_V15"] = Beta("B_AGE_27_69_V15", 0, None, None, 0)
-        dict_betas["b_AGE_70_89_V1521"] = Beta("B_AGE_70_89_V1521", 0, None, None, 0)
+        dict_betas["b_AGE_18_22_V1521"] = Beta("B_AGE_18_22_V1521", -0.3, None, None, 0)
+        dict_betas["b_AGE_23_26_V1521"] = Beta(
+            "B_AGE_23_26_V1521", -0.208, None, None, 0
+        )
+        dict_betas["b_AGE_27_69_V15"] = Beta("B_AGE_27_69_V15", -0.0149, None, None, 0)
+        dict_betas["b_AGE_70_89_V1521"] = Beta(
+            "B_AGE_70_89_V1521", -0.0134, None, None, 0
+        )
         dict_betas["b_AGE_90_plus_V1521"] = Beta(
-            "B_AGE_90_plus_V1521", 0, None, None, 0
+            "B_AGE_90_plus_V1521", -0.154, None, None, 0
         )
         dict_betas["b_AGE_18_22_HTV1521"] = Beta(
-            "B_AGE_18_22_HTV1521", 0, None, None, 0
+            "B_AGE_18_22_HTV1521", -0.315, None, None, 0
         )
         dict_betas["b_AGE_23_26_HTV1521"] = Beta(
-            "B_AGE_23_26_HTV1521", 0, None, None, 0
+            "B_AGE_23_26_HTV1521", -0.209, None, None, 0
         )
-        dict_betas["b_AGE_27_69_HTV15"] = Beta("B_AGE_27_69_HTV15", 0, None, None, 0)
-        dict_betas["b_AGE_70_89_HTV15"] = Beta("B_AGE_70_89_HTV15", 0, None, None, 0)
+        dict_betas["b_AGE_27_69_HTV15"] = Beta(
+            "B_AGE_27_69_HTV15", -0.00423, None, None, 0
+        )
+        dict_betas["b_AGE_70_89_HTV15"] = Beta(
+            "B_AGE_70_89_HTV15", -0.0309, None, None, 0
+        )
         dict_betas["b_AGE_90_plus_HTV1521"] = Beta(
-            "B_AGE_90_plus_HTV1521", 0, None, None, 0
+            "B_AGE_90_plus_HTV1521", -0.184, None, None, 0
         )
 
         dict_betas["b_couple_without_children_GA1521"] = Beta(
-            "b_couple_without_children_GA1521", 0, None, None, 0
+            "b_couple_without_children_GA1521", 0.259, None, None, 0
         )
         dict_betas["b_couple_with_children_GA15"] = Beta(
             "b_couple_with_children_GA15", 0, None, None, 1
         )
         dict_betas["b_single_parent_house_GA1521"] = Beta(
-            "b_single_parent_house_GA1521", 0, None, None, 0
+            "b_single_parent_house_GA1521", -0.193, None, None, 0
         )
         dict_betas["b_one_person_household_GA1521"] = Beta(
-            "b_one_person_household_GA1521", 0, None, None, 0
+            "b_one_person_household_GA1521", 0.388, None, None, 0
         )
         dict_betas["b_household_type_NA_GA1521"] = Beta(
-            "b_household_type_NA_GA1521", 0, None, None, 0
+            "b_household_type_NA_GA1521", -0.701, None, None, 0
         )
 
         dict_betas["b_couple_without_children_HT1521"] = Beta(
-            "b_couple_without_children_HT1521", 0, None, None, 0
+            "b_couple_without_children_HT1521", 0.218, None, None, 0
         )
         dict_betas["b_couple_with_children_HT15"] = Beta(
             "b_couple_with_children_HT15", 0, None, None, 1
         )
         dict_betas["b_single_parent_house_HT1521"] = Beta(
-            "b_single_parent_house_HT1521", 0, None, None, 0
+            "b_single_parent_house_HT1521", -0.208, None, None, 0
         )
         dict_betas["b_one_person_household_HT1521"] = Beta(
-            "b_one_person_household_HT1521", 0, None, None, 0
+            "b_one_person_household_HT1521", 0.0815, None, None, 0
         )
         dict_betas["b_household_type_NA_HT1521"] = Beta(
-            "b_household_type_NA_HT1521", 0, None, None, 0
+            "b_household_type_NA_HT1521", -0.0872, None, None, 0
         )
 
         dict_betas["b_couple_without_children_V1521"] = Beta(
-            "b_couple_without_children_V1521", 0, None, None, 0
+            "b_couple_without_children_V1521", 0.268, None, None, 0
         )
         dict_betas["b_couple_with_children_V1521"] = Beta(
-            "b_couple_with_children_V1521", 0, None, None, 0
+            "b_couple_with_children_V1521", 0.286, None, None, 0
         )
         dict_betas["b_single_parent_house_V1521"] = Beta(
-            "b_single_parent_house_V1521", 0, None, None, 0
+            "b_single_parent_house_V1521", 0.261, None, None, 0
         )
         dict_betas["b_one_person_household_V1521"] = Beta(
-            "b_one_person_household_V1521", 0, None, None, 0
+            "b_one_person_household_V1521", 0.553, None, None, 0
         )
         dict_betas["b_household_type_NA_V1521"] = Beta(
-            "b_household_type_NA_V1521", 0, None, None, 0
+            "b_household_type_NA_V1521", 0.268, None, None, 0
         )
 
         dict_betas["b_couple_without_children_HTV1521"] = Beta(
-            "b_couple_without_children_HTV1521", 0, None, None, 0
+            "b_couple_without_children_HTV1521", 0.432, None, None, 0
         )
         dict_betas["b_couple_with_children_HTV15"] = Beta(
             "b_couple_with_children_HTV15", 0, None, None, 1
@@ -912,44 +951,5 @@ def get_dict_betas(
             "b_single_parent_house_HTV1521", 0, None, None, 1
         )
         dict_betas["b_one_person_household_HTV1521"] = Beta(
-            "b_one_person_household_HTV1521", 0, None, None, 0
+            "b_one_person_household_HTV1521", 0.686, None, None, 0
         )
-        dict_betas["b_household_type_NA_HTV1521"] = Beta(
-            "b_household_type_NA_HTV1521", 0, None, None, 0
-        )
-
-        dict_betas["b_LANG_GERMAN_HTV21"] = Beta(
-            "B_LANG_GERMAN_HTV21", 0, None, None, 0
-        )
-
-        dict_betas["b_ACCESSIB_CAR_NONE21"] = Beta(
-            "B_ACCESSIB_CAR_NONE21", 0, None, None, 0
-        )
-        dict_betas["b_ACCESSIB_MULTI_NONE21"] = Beta(
-            "B_ACCESSIB_MULTI_NONE21", 0, None, None, 0
-        )
-        dict_betas["b_ACCESSIB_PT_HTV21"] = Beta(
-            "B_ACCESSIB_PT_HTV21", 0, None, None, 0
-        )
-
-        dict_betas["b_is_swiss_HT21"] = Beta("B_is_swiss_HT21", 0, None, None, 0)
-        dict_betas["b_is_swiss_V21"] = Beta("B_is_swiss_V21", 0, None, None, 1)
-
-        dict_betas["b_AGE_23_26_HT21"] = Beta("B_AGE_23_26_HT21", 0, None, None, 0)
-        dict_betas["b_AGE_27_69_HT21"] = Beta("B_AGE_27_69_HT21", 0, None, None, 0)
-        dict_betas["b_AGE_27_69_V21"] = Beta("B_AGE_27_69_V21", 0, None, None, 0)
-        dict_betas["b_AGE_27_69_HTV21"] = Beta("B_AGE_27_69_HTV21", 0, None, None, 0)
-        dict_betas["b_AGE_70_89_HTV21"] = Beta("B_AGE_70_89_HTV21", 0, None, None, 0)
-
-        dict_betas["b_couple_with_children_GA21"] = Beta(
-            "b_couple_with_children_GA21", 0, None, None, 1
-        )
-
-        dict_betas["b_couple_with_children_HT21"] = Beta(
-            "b_couple_with_children_HT21", 0, None, None, 1
-        )
-
-        dict_betas["b_couple_with_children_HTV21"] = Beta(
-            "b_couple_with_children_HTV21", 0, None, None, 1
-        )
-    return dict_betas
