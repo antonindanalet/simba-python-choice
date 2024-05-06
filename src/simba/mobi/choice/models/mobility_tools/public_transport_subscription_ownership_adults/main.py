@@ -16,9 +16,9 @@ from simba.mobi.choice.models.mobility_tools.public_transport_subscription_owner
 
 def public_transport_subscription_ownership() -> None:
     path_to_mobi_zones = Path(
-        r"\\path_to\mobi-zones.shp"
+        r"../../Zones/mobi-zones.shp"
     )
-    path_to_mtmc = Path(r"\\path_to_transport_and_mobility_microcensus_folder")
+    path_to_mtmc = Path(r"../../MZMV")
     data_directory = Path(Path(__file__).parent.parent.parent.parent.joinpath("data"))
     input_directory = data_directory.joinpath("input").joinpath(
         "public_transport_subscription_ownership"
