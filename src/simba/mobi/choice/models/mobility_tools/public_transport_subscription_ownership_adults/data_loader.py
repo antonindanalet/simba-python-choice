@@ -20,15 +20,14 @@ def get_data(
         df_zp = pd.read_csv(path_to_input / "zp_mtmc_2015_2021.csv")
     else:
         print('Creating input data from initial MTMC files...')
-        df_zp = get_data_per_year(2015, path_to_mtmc_data) #rather than df_zp_2015 = get_data_per_year(2015, path_to_mtmc_data)
-        # df_zp_2021 = get_data_per_year(2021, path_to_mtmc_data)
-        # df_zp = pd.concat([df_zp_2015, df_zp_2021])
+        df_zp_2015 = get_data_per_year(2015, path_to_mtmc_data)
+        df_zp_2021 = get_data_per_year(2021, path_to_mtmc_data)
+        df_zp = pd.concat([df_zp_2015, df_zp_2021])
         # Rename variables
-        # print(df_zp.columns)
         df_zp = df_zp.rename(
             columns={
                 "alter": "age",
-                # "f20400a": "driving_licence",
+                "f20400a": "driving_licence",
                 "sprache": "language",
                 "hhgr": "hh_size",
                 "f30100": "nb_cars",
@@ -51,8 +50,8 @@ def get_data(
         # Remove children
         df_zp = df_zp[df_zp.age > 17]
 
-        df_zp["has_driving_licence"].replace({2: 0}, inplace=True)  # 0: no, 1: yes
-        # print(df_zp.columns)
+        df_zp["driving_licence"].replace({2: 0}, inplace=True)  # 0: no, 1: yes
+
         df_zp.fillna(0, inplace=True)
         df_zp.to_csv(path_to_input / "zp_mtmc_2015_2021.csv", index=False)
     return df_zp
@@ -71,13 +70,13 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
             "f41610a",      # GA, variable 2015
             "f41610b",      # Halbtax
             "f41610c",      # Verbundabo
-            'activity_1_if_not_working',      # AV: In Ausbildung
-            'activity_2_if_not_working',
-            'activity_3_if_not_working',
+            'f41001a',      # AV: In Ausbildung
+            'f41001b',
+            'f41001c',
             'AU_X_CH1903', 
             'AU_Y_CH1903',
             'A_X_CH1903',
-            'A_Y_CH1903', 
+            'A_Y_CH1903'
         ]  
     elif year == 2021:
         selected_columns = [
@@ -95,8 +94,7 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
             'AU_X_CH1903',
             'AU_Y_CH1903',
             'A_X_CH1903',
-            'A_Y_CH1903', 
-            'f30100'
+            'A_Y_CH1903'
         ]  
     else:
         raise ValueError("Year not well defined! It must be 2015 or 2021...")
@@ -106,16 +104,11 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
             "f41610a": "GA_ticket",
             "f41610c": "Verbund_Abo",
             "f41610b": "halbtax_ticket",
-            #problem with column names
-            "has_ga": "GA_ticket",
-            "has_va": "Verbund_Abo",
-            "has_hta": "halbtax_ticket",
             "f41600_01a": "GA_ticket",
             "f41600_01c": "Verbund_Abo",
             "f41600_01b": "halbtax_ticket",
         }
     )
-    # print(df_zp.columns)
     df_zp["subscriptions"] = df_zp.apply(lambda row: label_subscriptions(row), axis=1)
     df_zp = df_zp[df_zp.subscriptions >= 0]
 
@@ -148,8 +141,8 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
     df_zp = pd.merge(df_zp, df_hh, on="HHNR", how="left")
 
     #AV
-    df_zp['In_Ausbildung'] = df_zp.apply(lambda x: 1 if (x['activity_1_if_not_working'] == 32) or (x['activity_2_if_not_working'] == 32) or (x['activity_3_if_not_working'] == 32) else 0, axis=1)
-    # df_zp.drop(columns=['f41001a', 'f41001b', 'f41001c'], inplace=True)
+    df_zp['In_Ausbildung'] = df_zp.apply(lambda x: 1 if (x['f41001a'] == 32) or (x['f41001b'] == 32) or (x['f41001c'] == 32) else 0, axis=1)
+    df_zp.drop(columns=['f41001a', 'f41001b', 'f41001c'], inplace=True)
 
     df_zp['dist_home_uni'] = np.sqrt((df_zp.W_X_CH1903 - df_zp.AU_X_CH1903)**2 + (df_zp.W_Y_CH1903 - df_zp.AU_Y_CH1903)**2) * df_zp['In_Ausbildung']
     # df_zp['dist_home_work'] = np.sqrt((df_zp.W_X_CH1903 - df_zp.A_X_CH1903)**2 + (df_zp.W_Y_CH1903 - df_zp.A_Y_CH1903)**2)
