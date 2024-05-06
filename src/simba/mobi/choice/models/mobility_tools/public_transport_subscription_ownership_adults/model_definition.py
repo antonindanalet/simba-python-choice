@@ -8,9 +8,9 @@ def define_variables(database: biogeme.database.Database) -> None:
     globals().update(database.variables)
 
     # General variables
-    driving_licence = Variable("driving_licence")
+    driving_licence = Variable("has_driving_licence")
     subscriptions = Variable("subscriptions")
-    nb_cars = Variable("nb_cars")
+    nb_cars = Variable("nb_of_cars")
     language = Variable("language")
     full_time = Variable("full_time")
     part_time = Variable("part_time")
@@ -24,6 +24,7 @@ def define_variables(database: biogeme.database.Database) -> None:
     year = Variable("year")
     hhtyp = Variable("hhtyp")
     ausbildung = Variable('In_Ausbildung')
+    unistudent = Variable('Uni_Student')
     dist_home_uni = Variable('dist_home_uni')
     # dist_home_work = Variable('dist_home_work') * Variable('full_time')
 
@@ -44,6 +45,9 @@ def define_variables(database: biogeme.database.Database) -> None:
 
     ausbildung15 = database.DefineVariable("ausbildung15", ausbildung * year15)
     ausbildung21 = database.DefineVariable("ausbildung21", ausbildung * year21)
+
+    unistudent15 = database.DefineVariable("unistudent15", unistudent * year15)
+    unistudent21 = database.DefineVariable("unistudent21", unistudent * year21)
 
     dist_home_uni15 = database.DefineVariable("dist_home_uni15", dist_home_uni * year15)
     dist_home_uni21 = database.DefineVariable("dist_home_uni21", dist_home_uni * year21)
@@ -500,6 +504,32 @@ def get_dict_betas(
             "B_AUSBILDUNG_HTV21", 0, None, None, 1
         )
 
+        dict_betas["b_UNISTUDENT_GA15"] = Beta(
+            "B_UNISTUDENT_GA15", 0, None, None, 0
+        )
+        dict_betas["b_UNISTUDENT_HT15"] = Beta(
+            "B_UNISTUDENT_HT15", 0, None, None, 0
+        )
+        dict_betas["b_UNISTUDENT_V15"] = Beta(
+            "B_UNISTUDENT_V15", 0, None, None, 0
+        )
+        dict_betas["b_UNISTUDENT_HTV15"] = Beta(
+            "B_UNISTUDENT_HTV15", 0, None, None, 0
+        )
+
+        dict_betas["b_UNISTUDENT_GA21"] = Beta(
+            "B_UNISTUDENT_GA21", 0, None, None, 1
+        )
+        dict_betas["b_UNISTUDENT_HT21"] = Beta(
+            "B_UNISTUDENT_HT21", 0, None, None, 1
+        )
+        dict_betas["b_UNISTUDENT_V21"] = Beta(
+            "B_UNISTUDENT_V21", 0, None, None, 1
+        )
+        dict_betas["b_UNISTUDENT_HTV21"] = Beta(
+            "B_UNISTUDENT_HTV21", 0, None, None, 1
+        )
+
         #distance from home to uni, linear
         dict_betas["b_DIST_H_U_GA15"] = Beta(
             "B_DIST_H_U_GA15", 0, None, None, 0
@@ -837,6 +867,19 @@ def get_dict_betas(
             "B_AUSBILDUNG_HTV21", 0, None, None, 0
         )
 
+        dict_betas["b_UNISTUDENT_GA21"] = Beta(
+            "B_UNISTUDENT_GA21", 0, None, None, 0
+        )
+        dict_betas["b_UNISTUDENT_HT21"] = Beta(
+            "B_UNISTUDENT_HT21", 0, None, None, 0
+        )
+        dict_betas["b_UNISTUDENT_V21"] = Beta(
+            "B_UNISTUDENT_V21", 0, None, None, 0
+        )
+        dict_betas["b_UNISTUDENT_HTV21"] = Beta(
+            "B_UNISTUDENT_HTV21", 0, None, None, 0
+        )
+
         #distance from home to uni, linear
         dict_betas["b_DIST_H_U_GA21"] = Beta(
             "B_DIST_H_U_GA21", 0, None, None, 0
@@ -1064,6 +1107,19 @@ def get_dict_betas(
             "B_AUSBILDUNG_HTV1521", 0, None, None, 0
         )
 
+        dict_betas["b_UNISTUDENT_GA1521"] = Beta(
+            "B_UNISTUDENT_GA1521", 0, None, None, 0
+        )
+        dict_betas["b_UNISTUDENT_HT1521"] = Beta(
+            "B_UNISTUDENT_HT1521", 0, None, None, 0
+        )
+        dict_betas["b_UNISTUDENT_V1521"] = Beta(
+            "B_UNISTUDENT_V1521", 0, None, None, 0
+        )
+        dict_betas["b_UNISTUDENT_HTV1521"] = Beta(
+            "B_UNISTUDENT_HTV1521", 0, None, None, 0
+        )
+
         #distance from home to uni, linear
         dict_betas["b_DIST_H_U_GA1521"] = Beta(
             "B_DIST_H_U_GA1521", 0, None, None, 0
@@ -1077,3 +1133,5 @@ def get_dict_betas(
         dict_betas["b_DIST_H_U_HTV1521"] = Beta(
             "B_DIST_H_U_HTV1521", 0, None, None, 0
         )
+
+    return dict_betas
