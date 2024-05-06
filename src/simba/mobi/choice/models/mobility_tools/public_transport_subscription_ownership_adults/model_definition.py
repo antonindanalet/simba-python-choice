@@ -8,9 +8,9 @@ def define_variables(database: biogeme.database.Database) -> None:
     globals().update(database.variables)
 
     # General variables
-    driving_licence = Variable("driving_licence")
+    driving_licence = Variable("has_driving_licence")
     subscriptions = Variable("subscriptions")
-    nb_cars = Variable("nb_cars")
+    nb_cars = Variable("nb_of_cars")
     language = Variable("language")
     full_time = Variable("full_time")
     part_time = Variable("part_time")
@@ -1077,3 +1077,5 @@ def get_dict_betas(
         dict_betas["b_DIST_H_U_HTV1521"] = Beta(
             "B_DIST_H_U_HTV1521", 0, None, None, 0
         )
+
+    return dict_betas
