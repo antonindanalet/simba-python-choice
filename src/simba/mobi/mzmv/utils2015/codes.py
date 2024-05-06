@@ -14,6 +14,7 @@ dict_mobi_names2mzmv_codes_zp_2015 = {
     "activity_1_if_not_working": "f41001a",
     "activity_2_if_not_working": "f41001b",
     "activity_3_if_not_working": "f41001c",
+    'first_formation_achieved':'f40200_01', #AV Quelle est l'école ou la formation que vous avez achevée en tout premier lieu, après votre scolarité obligatoire ?
 }
 
 dict_mobi_names2mzmv_codes_hh_2015 = {
