@@ -19,6 +19,7 @@ def get_data(
     if os.path.isfile(path_to_input / "zp_mtmc_2015_2021.csv"):
         df_zp = pd.read_csv(path_to_input / "zp_mtmc_2015_2021.csv")
     else:
+        print('Creating input data from initial MTMC files...')
         df_zp_2015 = get_data_per_year(2015, path_to_mtmc_data)
         df_zp_2021 = get_data_per_year(2021, path_to_mtmc_data)
         df_zp = pd.concat([df_zp_2015, df_zp_2021])
@@ -66,10 +67,17 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
             "ERWERB",
             "nation",
             "f20400a",
-            "f41610a",  # GA, variable 2015
-            "f41610b",  # Halbtax
-            "f41610c",
-        ]  # Verbundabo
+            "f41610a",      # GA, variable 2015
+            "f41610b",      # Halbtax
+            "f41610c",      # Verbundabo
+            'f41001a',      # AV: In Ausbildung
+            'f41001b',
+            'f41001c',
+            'AU_X_CH1903', 
+            'AU_Y_CH1903',
+            'A_X_CH1903',
+            'A_Y_CH1903'
+        ]  
     elif year == 2021:
         selected_columns = [
             "HHNR",
@@ -78,10 +86,16 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
             "ERWERB",
             "nation",
             "f20400a",
-            "f41600_01a",  # GA, variable 2021
-            "f41600_01b",  # Halbtax
-            "f41600_01c",
-        ]  # Verbundabo
+            "f41600_01a",   # GA, variable 2021
+            "f41600_01b",   # Halbtax
+            "f41600_01c",   # Verbundabo
+            'f41001b',      # AV: In Ausbildung
+            'f41001c',
+            'AU_X_CH1903',
+            'AU_Y_CH1903',
+            'A_X_CH1903',
+            'A_Y_CH1903'
+        ]  
     else:
         raise ValueError("Year not well defined! It must be 2015 or 2021...")
     df_zp = get_zp(year, path_to_mtmc_data, selected_columns=selected_columns)
@@ -99,13 +113,15 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
     df_zp = df_zp[df_zp.subscriptions >= 0]
 
     if year == 2015:
-        selected_columns = ["HHNR", "hhtyp", "W_X", "W_Y", "hhgr", "f30100", "W_BFS"]
+        selected_columns = ["HHNR", "hhtyp", "W_X", "W_Y", 'W_X_CH1903', 'W_Y_CH1903', "hhgr", "f30100", "W_BFS"]
     elif year == 2021:
         selected_columns = [
             "HHNR",
             "hhtyp",
             "W_X",
             "W_Y",
+            'W_X_CH1903',
+            'W_Y_CH1903',
             "hhgr",
             "f30100",
             "W_stadt_land_2012",
@@ -123,6 +139,13 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
     df_hh = pd.merge(df_hh, df_hhp_agg, left_on="HHNR", right_index=True, how="left")
     df_hh = df_hh.rename(columns={"is_adult": "nb_adults"})
     df_zp = pd.merge(df_zp, df_hh, on="HHNR", how="left")
+
+    #AV
+    df_zp['In_Ausbildung'] = df_zp.apply(lambda x: 1 if (x['f41001a'] == 32) or (x['f41001b'] == 32) or (x['f41001c'] == 32) else 0, axis=1)
+    df_zp.drop(columns=['f41001a', 'f41001b', 'f41001c'], inplace=True)
+
+    df_zp['dist_home_uni'] = np.sqrt((df_zp.W_X_CH1903 - df_zp.AU_X_CH1903)**2 + (df_zp.W_Y_CH1903 - df_zp.AU_Y_CH1903)**2) * df_zp['In_Ausbildung']
+    # df_zp['dist_home_work'] = np.sqrt((df_zp.W_X_CH1903 - df_zp.A_X_CH1903)**2 + (df_zp.W_Y_CH1903 - df_zp.A_Y_CH1903)**2)
     return df_zp
 
 

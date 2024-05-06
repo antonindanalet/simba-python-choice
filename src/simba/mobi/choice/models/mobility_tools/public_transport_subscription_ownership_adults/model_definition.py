@@ -23,6 +23,9 @@ def define_variables(database: biogeme.database.Database) -> None:
     W_stadt_land_2012 = Variable("W_stadt_land_2012")
     year = Variable("year")
     hhtyp = Variable("hhtyp")
+    ausbildung = Variable('In_Ausbildung')
+    dist_home_uni = Variable('dist_home_uni')
+    # dist_home_work = Variable('dist_home_work') * Variable('full_time')
 
     year15 = database.DefineVariable("year15", year == 2015)
     year21 = database.DefineVariable("year21", year == 2021)
@@ -38,6 +41,15 @@ def define_variables(database: biogeme.database.Database) -> None:
 
     age15 = database.DefineVariable("age15", age * year15)
     age21 = database.DefineVariable("age21", age * year21)
+
+    ausbildung15 = database.DefineVariable("ausbildung15", ausbildung * year15)
+    ausbildung21 = database.DefineVariable("ausbildung21", ausbildung * year21)
+
+    dist_home_uni15 = database.DefineVariable("dist_home_uni15", dist_home_uni * year15)
+    dist_home_uni21 = database.DefineVariable("dist_home_uni21", dist_home_uni * year21)
+
+    # dist_home_work15 = database.DefineVariable("dist_home_work15", dist_home_work * year15)
+    # dist_home_work21 = database.DefineVariable("dist_home_work21", dist_home_work * year21)
 
     driving_licence_not_NA15 = database.DefineVariable(
         "driving_licence_not_NA15", (driving_licence == 1) * year15
@@ -461,6 +473,61 @@ def get_dict_betas(
             "b_household_type_NA_HTV21", 0, None, None, 1
         )
 
+        # ausbildung
+        dict_betas["b_AUSBILDUNG_GA15"] = Beta(
+            "B_AUSBILDUNG_GA15", 0, None, None, 0
+        )
+        dict_betas["b_AUSBILDUNG_HT15"] = Beta(
+            "B_AUSBILDUNG_HT15", 0, None, None, 0
+        )
+        dict_betas["b_AUSBILDUNG_V15"] = Beta(
+            "B_AUSBILDUNG_V15", 0, None, None, 0
+        )
+        dict_betas["b_AUSBILDUNG_HTV15"] = Beta(
+            "B_AUSBILDUNG_HTV15", 0, None, None, 0
+        )
+
+        dict_betas["b_AUSBILDUNG_GA21"] = Beta(
+            "B_AUSBILDUNG_GA21", 0, None, None, 1
+        )
+        dict_betas["b_AUSBILDUNG_HT21"] = Beta(
+            "B_AUSBILDUNG_HT21", 0, None, None, 1
+        )
+        dict_betas["b_AUSBILDUNG_V21"] = Beta(
+            "B_AUSBILDUNG_V21", 0, None, None, 1
+        )
+        dict_betas["b_AUSBILDUNG_HTV21"] = Beta(
+            "B_AUSBILDUNG_HTV21", 0, None, None, 1
+        )
+
+        #distance from home to uni, linear
+        dict_betas["b_DIST_H_U_GA15"] = Beta(
+            "B_DIST_H_U_GA15", 0, None, None, 0
+        )
+        dict_betas["b_DIST_H_U_HT15"] = Beta(
+            "B_DIST_H_U_HT15", 0, None, None, 0
+        )
+        dict_betas["b_DIST_H_U_V15"] = Beta(
+            "B_DIST_H_U_V15", 0, None, None, 0
+        )
+        dict_betas["b_DIST_H_U_HTV15"] = Beta(
+            "B_DIST_H_U_HTV15", 0, None, None, 0
+        )
+
+        dict_betas["b_DIST_H_U_GA21"] = Beta(
+            "B_DIST_H_U_GA21", 0, None, None, 1
+        )
+        dict_betas["b_DIST_H_U_HT21"] = Beta(
+            "B_DIST_H_U_HT21", 0, None, None, 1
+        )
+        dict_betas["b_DIST_H_U_V21"] = Beta(
+            "B_DIST_H_U_V21", 0, None, None, 1
+        )
+        dict_betas["b_DIST_H_U_HTV21"] = Beta(
+            "B_DIST_H_U_HTV21", 0, None, None, 1
+        )
+
+
         dict_betas["mu_2021"] = Beta("mu_2021", 0, None, None, 1)
     elif estimate_2021:
         print("Using 2021 betas...")
@@ -755,6 +822,35 @@ def get_dict_betas(
         )
 
         dict_betas["mu_2021"] = Beta("mu_2021", 1, None, None, 1)
+
+        # ausbildung
+        dict_betas["b_AUSBILDUNG_GA21"] = Beta(
+            "B_AUSBILDUNG_GA21", 0, None, None, 0
+        )
+        dict_betas["b_AUSBILDUNG_HT21"] = Beta(
+            "B_AUSBILDUNG_HT21", 0, None, None, 0
+        )
+        dict_betas["b_AUSBILDUNG_V21"] = Beta(
+            "B_AUSBILDUNG_V21", 0, None, None, 0
+        )
+        dict_betas["b_AUSBILDUNG_HTV21"] = Beta(
+            "B_AUSBILDUNG_HTV21", 0, None, None, 0
+        )
+
+        #distance from home to uni, linear
+        dict_betas["b_DIST_H_U_GA21"] = Beta(
+            "B_DIST_H_U_GA21", 0, None, None, 0
+        )
+        dict_betas["b_DIST_H_U_HT21"] = Beta(
+            "B_DIST_H_U_HT21", 0, None, None, 0
+        )
+        dict_betas["b_DIST_H_U_V21"] = Beta(
+            "B_DIST_H_U_V21", 0, None, None, 0
+        )
+        dict_betas["b_DIST_H_U_HTV21"] = Beta(
+            "B_DIST_H_U_HTV21", 0, None, None, 0
+        )
+
     elif estimate_2015_2021:
         dict_betas["mu_2021"] = Beta("mu_2021", 1.03, None, None, 0)
 
@@ -952,4 +1048,32 @@ def get_dict_betas(
         )
         dict_betas["b_one_person_household_HTV1521"] = Beta(
             "b_one_person_household_HTV1521", 0.686, None, None, 0
+        )
+
+        # ausbildung
+        dict_betas["b_AUSBILDUNG_GA1521"] = Beta(
+            "B_AUSBILDUNG_GA1521", 0, None, None, 0
+        )
+        dict_betas["b_AUSBILDUNG_HT1521"] = Beta(
+            "B_AUSBILDUNG_HT1521", 0, None, None, 0
+        )
+        dict_betas["b_AUSBILDUNG_V1521"] = Beta(
+            "B_AUSBILDUNG_V1521", 0, None, None, 0
+        )
+        dict_betas["b_AUSBILDUNG_HTV1521"] = Beta(
+            "B_AUSBILDUNG_HTV1521", 0, None, None, 0
+        )
+
+        #distance from home to uni, linear
+        dict_betas["b_DIST_H_U_GA1521"] = Beta(
+            "B_DIST_H_U_GA1521", 0, None, None, 0
+        )
+        dict_betas["b_DIST_H_U_HT1521"] = Beta(
+            "B_DIST_H_U_HT1521", 0, None, None, 0
+        )
+        dict_betas["b_DIST_H_U_V1521"] = Beta(
+            "B_DIST_H_U_V1521", 0, None, None, 0
+        )
+        dict_betas["b_DIST_H_U_HTV1521"] = Beta(
+            "B_DIST_H_U_HTV1521", 0, None, None, 0
         )
