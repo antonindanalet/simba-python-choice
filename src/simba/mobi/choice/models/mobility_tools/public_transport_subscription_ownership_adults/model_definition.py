@@ -6,7 +6,7 @@ from biogeme.expressions import Variable
 
 def define_variables(database: biogeme.database.Database) -> None:
     globals().update(database.variables)
-
+    
     # General variables
     driving_licence = Variable("has_driving_licence")
     subscriptions = Variable("subscriptions")
@@ -176,6 +176,7 @@ def get_dict_betas(
     estimate_2015: bool, estimate_2021: bool, estimate_2015_2021: bool
 ) -> dict:
     # General betas
+    V_options = ['GA', 'HT', 'V', 'HTV', ]
     dict_betas = {
         "ASC_NONE": Beta("ASC_NONE", 0, None, None, 1),
         "ASC_GA": Beta("ASC_GA", 1.53, None, None, 0),
@@ -544,6 +545,12 @@ def get_dict_betas(
             "B_DIST_H_U_HTV15", 0, None, None, 0
         )
 
+        for k in V_options:
+            dict_betas[f'beta_DIST_H_U_cut1_{k}15'] = Beta(f'beta_DIST_H_U_cut1_{k}15', 0, None, None, 0)
+            dict_betas[f'beta_DIST_H_U_cut2_{k}15'] = Beta(f'beta_DIST_H_U_cut2_{k}15', 0, None, None, 0)
+            dict_betas[f'beta_DIST_H_U_cut3_{k}15'] = Beta(f'beta_DIST_H_U_cut3_{k}15', 0, None, None, 0)
+
+
         dict_betas["b_DIST_H_U_GA21"] = Beta(
             "B_DIST_H_U_GA21", 0, None, None, 1
         )
@@ -556,6 +563,12 @@ def get_dict_betas(
         dict_betas["b_DIST_H_U_HTV21"] = Beta(
             "B_DIST_H_U_HTV21", 0, None, None, 1
         )
+
+        for k in V_options:
+            dict_betas[f'beta_DIST_H_U_cut1_{k}21'] = Beta(f'beta_DIST_H_U_cut1_{k}21', 0, None, None, 1)
+            dict_betas[f'beta_DIST_H_U_cut2_{k}21'] = Beta(f'beta_DIST_H_U_cut2_{k}21', 0, None, None, 1)
+            dict_betas[f'beta_DIST_H_U_cut3_{k}21'] = Beta(f'beta_DIST_H_U_cut3_{k}21', 0, None, None, 1)
+
 
 
         dict_betas["mu_2021"] = Beta("mu_2021", 0, None, None, 1)

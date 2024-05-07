@@ -152,7 +152,7 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
     #AV
     df_zp['In_Ausbildung'] = df_zp.apply(lambda x: 1 if (x['activity_1_if_not_working'] == 32) or (x['activity_2_if_not_working'] == 32) or (x['activity_3_if_not_working'] == 32) else 0, axis=1)
     # df_zp.drop(columns=['f41001a', 'f41001b', 'f41001c'], inplace=True)
-    df_zp['Uni_Student'] = df_zp['first_formation_achieved'].apply(lambda x: 1 if (x == 11) or (x == 12) else 0) * personen_df['In_Ausbildung']
+    df_zp['Uni_Student'] = df_zp['first_formation_achieved'].apply(lambda x: 1 if (x == 11) or (x == 12) else 0) * df_zp['In_Ausbildung']
 
     df_zp['dist_home_uni'] = np.sqrt((df_zp.W_X_CH1903 - df_zp.AU_X_CH1903)**2 + (df_zp.W_Y_CH1903 - df_zp.AU_Y_CH1903)**2) * df_zp['In_Ausbildung']
     # df_zp['dist_home_work'] = np.sqrt((df_zp.W_X_CH1903 - df_zp.A_X_CH1903)**2 + (df_zp.W_Y_CH1903 - df_zp.A_Y_CH1903)**2)

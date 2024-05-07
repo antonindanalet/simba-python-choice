@@ -13,6 +13,8 @@ from simba.mobi.choice.models.mobility_tools.public_transport_subscription_owner
     estimate_model,
 )
 
+import time
+start_time = time.time()
 
 def public_transport_subscription_ownership() -> None:
     path_to_mobi_zones = Path(
@@ -30,8 +32,9 @@ def public_transport_subscription_ownership() -> None:
     output_directory.mkdir(parents=True, exist_ok=True)
     estimate_model(df_zp, output_directory)
     visualize_piecewise_age(output_directory)
-    distribution_half_fare_regional_travelcards(path_to_mtmc)
+    # distribution_half_fare_regional_travelcards(path_to_mtmc)
 
 
 if __name__ == "__main__":
     public_transport_subscription_ownership()
+print("total time in s", (time.time() - start_time))
