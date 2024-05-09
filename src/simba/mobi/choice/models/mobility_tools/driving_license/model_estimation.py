@@ -16,8 +16,8 @@ from simba.mobi.choice.utils.biogeme import estimate_in_directory
 
 
 def estimate_model(df_zp, output_directory: Path) -> None:
-    estimate_2015 = False
-    estimate_2021 = True
+    estimate_2015 = True
+    estimate_2021 = False
     estimate_2015_2020_2021 = False
     if estimate_2015:
         df_zp = df_zp.loc[
@@ -30,7 +30,9 @@ def estimate_model(df_zp, output_directory: Path) -> None:
     database = db.Database("indivDL", df_zp)
 
     define_variables(database, estimate_2015_2020_2021)
+    # print('before update', database.variables)
     globals().update(database.variables)
+    # print('after update', database.variables)
 
     dict_betas = get_dict_betas(estimate_2015_2020_2021)
 
@@ -64,6 +66,8 @@ def estimate_model(df_zp, output_directory: Path) -> None:
             * bioMax(0.0, bioMin((age15 - 69.5), 20.0))
             + dict_betas["beta_age152021_90_120"]
             * bioMax(0.0, bioMin((age15 - 89.5), 30.5))
+            + dict_betas["B_AUSBILDUNG152021"] * ausbildung15
+            # + dict_betas["B_UNISTUDENT152021"] * unistudent15
             + dict_betas["mu_2020"]
             * (
                 dict_betas["B_FULLTIME152021"] * full_time20
@@ -91,6 +95,9 @@ def estimate_model(df_zp, output_directory: Path) -> None:
                 * bioMax(0.0, bioMin((age20 - 69.5), 20.0))
                 + dict_betas["beta_age152021_90_120"]
                 * bioMax(0.0, bioMin((age20 - 89.5), 30.5))
+                + dict_betas["B_AUSBILDUNG152021"] * ausbildung20
+                # + dict_betas["B_UNISTUDENT152021"] * unistudent20
+
             )
             + dict_betas["mu_2021"]
             * (
@@ -119,6 +126,8 @@ def estimate_model(df_zp, output_directory: Path) -> None:
                 * bioMax(0.0, bioMin((age21 - 69.5), 20.0))
                 + dict_betas["beta_age152021_90_120"]
                 * bioMax(0.0, bioMin((age21 - 89.5), 30.5))
+                + dict_betas["B_AUSBILDUNG152021"] * ausbildung21
+                # + dict_betas["B_UNISTUDENT152021"] * unistudent21
             )
         )
     else:
@@ -141,11 +150,13 @@ def estimate_model(df_zp, output_directory: Path) -> None:
             + dict_betas["beta_single_parent_house"] * single_parent_house
             + dict_betas["beta_household_type_NA"] * household_type_NA
             + dict_betas["B_LANG_FRENCH152021"] * french
-            + dict_betas["beta_age_0_22"] * bioMax(0.0, bioMin(age, 22.5))
-            + dict_betas["beta_age_23_26"] * bioMax(0.0, bioMin((age - 22.5), 4.0))
-            + dict_betas["beta_age_27_69"] * bioMax(0.0, bioMin((age - 26.5), 43.0))
-            + dict_betas["beta_age_70_89"] * bioMax(0.0, bioMin((age - 69.5), 20.0))
-            + dict_betas["beta_age_90_120"] * bioMax(0.0, bioMin((age - 89.5), 30.5))
+            # + dict_betas["beta_age_0_22"] * bioMax(0.0, bioMin(age, 22.5))
+            # + dict_betas["beta_age_23_26"] * bioMax(0.0, bioMin((age - 22.5), 4.0))
+            # + dict_betas["beta_age_27_69"] * bioMax(0.0, bioMin((age - 26.5), 43.0))
+            # + dict_betas["beta_age_70_89"] * bioMax(0.0, bioMin((age - 69.5), 20.0))
+            # + dict_betas["beta_age_90_120"] * bioMax(0.0, bioMin((age - 89.5), 30.5))
+            + dict_betas["B_AUSBILDUNG152021"] * In_Ausbildung
+            # + dict_betas["B_UNISTUDENT152021"] * Uni_Student
         )
 
     V = {0: V_NODL, 1: V_DL}
@@ -153,7 +164,7 @@ def estimate_model(df_zp, output_directory: Path) -> None:
 
     # Definition of the model. This is the contribution of each
     # observation to the log likelihood function.
-    logprob = models.loglogit(V, av, driving_licence)
+    logprob = models.loglogit(V, av, has_driving_licence)
 
     # Define the directory where biogeme writes the output
     if estimate_2015_2020_2021:
@@ -166,13 +177,13 @@ def estimate_model(df_zp, output_directory: Path) -> None:
     output_directory.mkdir(parents=True, exist_ok=True)
     # Create the Biogeme object
     the_biogeme = bio.BIOGEME(database, logprob)
-    the_biogeme.modelName = "dcm_hh_dl"
+    the_biogeme.modelName = "dcm_hh_dl_au_wo_age"
 
     # Calculate the null log likelihood for reporting.
     the_biogeme.calculateNullLoglikelihood(av)
-
+    print('Estimating the model')
     results = estimate_in_directory(the_biogeme, output_directory)
 
     # Get the results in a pandas table
     df_parameters = results.getEstimatedParameters()
-    df_parameters.to_csv(output_directory.joinpath("parameters_dcm_hh_dl.csv"))
+    df_parameters.to_csv(output_directory.joinpath("parameters_dcm_hh_dl_au_wo_age.csv"))

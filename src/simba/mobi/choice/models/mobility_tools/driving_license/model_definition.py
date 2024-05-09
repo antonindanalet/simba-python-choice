@@ -15,6 +15,8 @@ def define_variables(
     pc_car = Variable("pc_car")
     age = Variable("age")
     language = Variable("language")
+    ausbildung = Variable('In_Ausbildung')
+    unistudent = Variable('Uni_Student')
     accessibility_public_transport = Variable("accsib_pt")
     accessibility_multimodal = Variable("accsib_mul")
     parking_cost_car = Variable("pc_car")
@@ -24,6 +26,7 @@ def define_variables(
     parking_cost_car_log = database.DefineVariable(
         "parking_cost_car_log", logzero(parking_cost_car) * parking_cost_car
     )
+    
 
     if estimate_2015_2020_2021:
         year = Variable("year")
@@ -39,6 +42,12 @@ def define_variables(
         age15 = database.DefineVariable("age15", age * year15)
         age20 = database.DefineVariable("age20", age * year20)
         age21 = database.DefineVariable("age21", age * year21)
+        ausbildung15 = database.DefineVariable("ausbildung15", ausbildung * year15)
+        ausbildung20 = database.DefineVariable("ausbildung20", ausbildung * year20)
+        ausbildung21 = database.DefineVariable("ausbildung21", ausbildung * year21)
+        unistudent15 = database.DefineVariable("unistudent15", unistudent * year15)
+        unistudent20 = database.DefineVariable("unistudent20", unistudent * year20)
+        unistudent21 = database.DefineVariable("unistudent21", unistudent * year21)
         parking_cost_car_log15 = database.DefineVariable(
             "parking_cost_car_log15", parking_cost_car_log * year15
         )
@@ -185,6 +194,8 @@ def get_dict_betas(estimate_2015_2020_2021: bool) -> dict:
         "B_free_parking_car152021": Beta("B_free_parking_car152021", 0, None, None, 0),
         "B_is_swiss152021": Beta("B_is_swiss152021", 0, None, None, 0),
         "B_LANG_FRENCH152021": Beta("B_LANG_FRENCH152021", 0, None, None, 0),
+        "B_AUSBILDUNG152021": Beta("B_AUSBILDUNG152021", 0, None, None, 0),
+        "B_UNISTUDENT152021": Beta("B_UNISTUDENT152021", 0, None, None, 0),
     }
 
     if estimate_2015_2020_2021:
@@ -259,7 +270,8 @@ def get_dict_betas(estimate_2015_2020_2021: bool) -> dict:
         dict_betas["beta_household_type_NA21"] = Beta(
             "beta_household_type_NA21", 0, None, None, 0
         )
-
+        dict_betas["B_AUSBILDUNG152021"] = Beta("B_AUSBILDUNG152021", 0, None, None, 0)
+        dict_betas["B_UNISTUDENT152021"] = Beta("B_UNISTUDENT152021", 0, None, None, 0)
         dict_betas["mu_2020"] = Beta("mu_2020", 1, 0.001, None, 0)
         dict_betas["mu_2021"] = Beta("mu_2021", 1, 0.001, None, 0)
     else:

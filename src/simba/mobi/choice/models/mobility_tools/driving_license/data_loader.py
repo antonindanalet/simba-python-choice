@@ -15,10 +15,12 @@ def get_data(
     if path_to_input.exists() and path_to_input.is_file():
         df_zp = pd.read_csv(path_to_input)
     else:
+        print('Creating input data from initial MTMC files...')
         df_zp_2015 = get_data_per_year(2015, path_to_mtmc_data=path_to_mtmc_data)
-        df_zp_2020 = get_data_per_year(2020, path_to_mtmc_data=path_to_mtmc_data)
-        df_zp_2021 = get_data_per_year(2021, path_to_mtmc_data=path_to_mtmc_data)
-        df_zp = pd.concat([df_zp_2015, df_zp_2020, df_zp_2021])
+        #df_zp_2020 = get_data_per_year(2020, path_to_mtmc_data=path_to_mtmc_data)
+        #df_zp_2021 = get_data_per_year(2021, path_to_mtmc_data=path_to_mtmc_data)
+        #df_zp = pd.concat([df_zp_2015, df_zp_2020, df_zp_2021])
+        df_zp = df_zp_2015
         # Rename variables
         df_zp = df_zp.rename(
             columns={
@@ -43,8 +45,13 @@ def get_data(
         # Remove children
         df_zp = df_zp[df_zp.age > 17]
 
-        df_zp.driving_licence.replace({2: 0}, inplace=True)  # 0: no, 1: yes
-        df_zp = df_zp[df_zp.driving_licence >= 0]  # Removes 'no answer' / 'don't know
+        df_zp.has_driving_licence.replace({2: 0}, inplace=True)  # 0: no, 1: yes
+        df_zp = df_zp[df_zp.has_driving_licence >= 0]  # Removes 'no answer' / 'don't know
+        
+        #AV
+        df_zp['In_Ausbildung'] = df_zp.apply(lambda x: 1 if (x['activity_1_if_not_working'] == 32) or (x['activity_2_if_not_working'] == 32) or (x['activity_3_if_not_working'] == 32) else 0, axis=1)
+        # df_zp.drop(columns=['f41001a', 'f41001b', 'f41001c'], inplace=True)
+        df_zp['Uni_Student'] = df_zp['first_formation_achieved'].apply(lambda x: 1 if (x == 11) or (x == 12) else 0) * df_zp['In_Ausbildung']
 
         df_zp.fillna(0, inplace=True)
         df_zp.to_csv(path_to_input, index=False)
@@ -56,7 +63,18 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
     df_zp = get_zp(
         year=year,
         path_to_mtmc_data=path_to_mtmc_data,
-        selected_columns=["HHNR", "alter", "sprache", "ERWERB", "nation", "f20400a"],
+        selected_columns= [
+            "HHNR",
+            "alter",
+            "sprache",
+            "ERWERB",
+            "nation",
+            "f20400a", 
+            'activity_1_if_not_working',
+            'activity_2_if_not_working',
+            'activity_3_if_not_working',
+            'first_formation_achieved',
+        ],
     )
     df_hh = get_hh(
         year=year,

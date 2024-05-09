@@ -10,13 +10,14 @@ from simba.mobi.choice.models.mobility_tools.driving_license.descriptive_stats i
 from simba.mobi.choice.models.mobility_tools.driving_license.model_estimation import (
     estimate_model,
 )
-
+import time
+start_time = time.time()
 
 def driving_licence_choice() -> None:
     path_to_mobi_zones = Path(
-        r"\\path_to\mobi-zones.shp"
+        r"../../Zones/mobi-zones.shp"
     )
-    path_to_mtmc = Path(r"path_to_transport_and_mobility_microcensus_folder")
+    path_to_mtmc = Path(r"../../MZMV")
 
     data_directory = Path(Path(__file__).parent.parent.parent.parent.joinpath("data"))
     input_directory = data_directory.joinpath("input").joinpath("driving_license")
@@ -36,3 +37,4 @@ def driving_licence_choice() -> None:
 
 if __name__ == "__main__":
     driving_licence_choice()
+print("total time in s", (time.time() - start_time))
