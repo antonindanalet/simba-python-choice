@@ -157,6 +157,7 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
     df_zp['dist_home_uni'] = np.sqrt((df_zp.W_X_CH1903 - df_zp.AU_X_CH1903)**2 + (df_zp.W_Y_CH1903 - df_zp.AU_Y_CH1903)**2) * df_zp['In_Ausbildung']
     # set to 0 if distance is too high (only 57 students with distance > 200km)
     df_zp['dist_home_uni'] = df_zp['dist_home_uni'].apply(lambda x: 0 if x>200000 else x)
+    df_zp['dist_home_uni'] = df_zp['dist_home_uni']/10000 #maybe the problem is a scale problem :)) -> distance in e-4 m (10km)
     # df_zp['dist_home_work'] = np.sqrt((df_zp.W_X_CH1903 - df_zp.A_X_CH1903)**2 + (df_zp.W_Y_CH1903 - df_zp.A_Y_CH1903)**2)
     return df_zp
 

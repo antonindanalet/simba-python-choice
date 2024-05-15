@@ -505,69 +505,70 @@ def get_dict_betas(
             "B_AUSBILDUNG_HTV21", 0, None, None, 1
         )
 
-        dict_betas["b_UNISTUDENT_GA15"] = Beta(
-            "B_UNISTUDENT_GA15", 0, None, None, 0
-        )
-        dict_betas["b_UNISTUDENT_HT15"] = Beta(
-            "B_UNISTUDENT_HT15", 0, None, None, 0
-        )
-        dict_betas["b_UNISTUDENT_V15"] = Beta(
-            "B_UNISTUDENT_V15", 0, None, None, 0
-        )
-        dict_betas["b_UNISTUDENT_HTV15"] = Beta(
-            "B_UNISTUDENT_HTV15", 0, None, None, 0
-        )
+        # dict_betas["b_UNISTUDENT_GA15"] = Beta(
+        #     "B_UNISTUDENT_GA15", 0, None, None, 0
+        # )
+        # dict_betas["b_UNISTUDENT_HT15"] = Beta(
+        #     "B_UNISTUDENT_HT15", 0, None, None, 0
+        # )
+        # dict_betas["b_UNISTUDENT_V15"] = Beta(
+        #     "B_UNISTUDENT_V15", 0, None, None, 0
+        # )
+        # dict_betas["b_UNISTUDENT_HTV15"] = Beta(
+        #     "B_UNISTUDENT_HTV15", 0, None, None, 0
+        # )
 
-        dict_betas["b_UNISTUDENT_GA21"] = Beta(
-            "B_UNISTUDENT_GA21", 0, None, None, 1
-        )
-        dict_betas["b_UNISTUDENT_HT21"] = Beta(
-            "B_UNISTUDENT_HT21", 0, None, None, 1
-        )
-        dict_betas["b_UNISTUDENT_V21"] = Beta(
-            "B_UNISTUDENT_V21", 0, None, None, 1
-        )
-        dict_betas["b_UNISTUDENT_HTV21"] = Beta(
-            "B_UNISTUDENT_HTV21", 0, None, None, 1
-        )
+        # dict_betas["b_UNISTUDENT_GA21"] = Beta(
+        #     "B_UNISTUDENT_GA21", 0, None, None, 1
+        # )
+        # dict_betas["b_UNISTUDENT_HT21"] = Beta(
+        #     "B_UNISTUDENT_HT21", 0, None, None, 1
+        # )
+        # dict_betas["b_UNISTUDENT_V21"] = Beta(
+        #     "B_UNISTUDENT_V21", 0, None, None, 1
+        # )
+        # dict_betas["b_UNISTUDENT_HTV21"] = Beta(
+        #     "B_UNISTUDENT_HTV21", 0, None, None, 1
+        # )
 
         #distance from home to uni, linear
-        dict_betas["b_DIST_H_U_GA15"] = Beta(
-            "B_DIST_H_U_GA15", 0, None, None, 0
-        )
-        dict_betas["b_DIST_H_U_HT15"] = Beta(
-            "B_DIST_H_U_HT15", 0, None, None, 0
-        )
-        dict_betas["b_DIST_H_U_V15"] = Beta(
-            "B_DIST_H_U_V15", 0, None, None, 0
-        )
-        dict_betas["b_DIST_H_U_HTV15"] = Beta(
-            "B_DIST_H_U_HTV15", 0, None, None, 0
-        )
+        # dict_betas["b_DIST_H_U_GA15"] = Beta(
+        #     "B_DIST_H_U_GA15", 0, None, None, 0
+        # )
+        # dict_betas["b_DIST_H_U_HT15"] = Beta(
+        #     "B_DIST_H_U_HT15", 0, None, None, 0
+        # )
+        # dict_betas["b_DIST_H_U_V15"] = Beta(
+        #     "B_DIST_H_U_V15", 0, None, None, 0
+        # )
+        # dict_betas["b_DIST_H_U_HTV15"] = Beta(
+        #     "B_DIST_H_U_HTV15", 0, None, None, 0
+        # )
 
         for k in V_options:
             dict_betas[f'beta_DIST_H_U_cut1_{k}15'] = Beta(f'beta_DIST_H_U_cut1_{k}15', 0, None, None, 0)
             dict_betas[f'beta_DIST_H_U_cut2_{k}15'] = Beta(f'beta_DIST_H_U_cut2_{k}15', 0, None, None, 0)
-            dict_betas[f'beta_DIST_H_U_cut3_{k}15'] = Beta(f'beta_DIST_H_U_cut3_{k}15', 0, None, None, 0)
+            
 
-
-        dict_betas["b_DIST_H_U_GA21"] = Beta(
-            "B_DIST_H_U_GA21", 0, None, None, 1
-        )
-        dict_betas["b_DIST_H_U_HT21"] = Beta(
-            "B_DIST_H_U_HT21", 0, None, None, 1
-        )
-        dict_betas["b_DIST_H_U_V21"] = Beta(
-            "B_DIST_H_U_V21", 0, None, None, 1
-        )
-        dict_betas["b_DIST_H_U_HTV21"] = Beta(
-            "B_DIST_H_U_HTV21", 0, None, None, 1
-        )
-
-        for k in V_options:
             dict_betas[f'beta_DIST_H_U_cut1_{k}21'] = Beta(f'beta_DIST_H_U_cut1_{k}21', 0, None, None, 1)
             dict_betas[f'beta_DIST_H_U_cut2_{k}21'] = Beta(f'beta_DIST_H_U_cut2_{k}21', 0, None, None, 1)
-            dict_betas[f'beta_DIST_H_U_cut3_{k}21'] = Beta(f'beta_DIST_H_U_cut3_{k}21', 0, None, None, 1)
+            #dict_betas[f'beta_DIST_H_U_cut3_{k}21'] = Beta(f'beta_DIST_H_U_cut3_{k}21', 0, None, None, 1)
+
+        dict_betas[f'beta_DIST_H_U_cut3_GA15'] = Beta(f'beta_DIST_H_U_cut3_GA15', 0, None, None, 0)
+        dict_betas[f'beta_DIST_H_U_cut3_GA21'] = Beta(f'beta_DIST_H_U_cut3_GA21', 0, None, None, 1)
+
+        # dict_betas["b_DIST_H_U_GA21"] = Beta(
+        #     "B_DIST_H_U_GA21", 0, None, None, 1
+        # )
+        # dict_betas["b_DIST_H_U_HT21"] = Beta(
+        #     "B_DIST_H_U_HT21", 0, None, None, 1
+        # )
+        # dict_betas["b_DIST_H_U_V21"] = Beta(
+        #     "B_DIST_H_U_V21", 0, None, None, 1
+        # )
+        # dict_betas["b_DIST_H_U_HTV21"] = Beta(
+        #     "B_DIST_H_U_HTV21", 0, None, None, 1
+        # )
 
 
 
@@ -880,32 +881,32 @@ def get_dict_betas(
             "B_AUSBILDUNG_HTV21", 0, None, None, 0
         )
 
-        dict_betas["b_UNISTUDENT_GA21"] = Beta(
-            "B_UNISTUDENT_GA21", 0, None, None, 0
-        )
-        dict_betas["b_UNISTUDENT_HT21"] = Beta(
-            "B_UNISTUDENT_HT21", 0, None, None, 0
-        )
-        dict_betas["b_UNISTUDENT_V21"] = Beta(
-            "B_UNISTUDENT_V21", 0, None, None, 0
-        )
-        dict_betas["b_UNISTUDENT_HTV21"] = Beta(
-            "B_UNISTUDENT_HTV21", 0, None, None, 0
-        )
+        # dict_betas["b_UNISTUDENT_GA21"] = Beta(
+        #     "B_UNISTUDENT_GA21", 0, None, None, 0
+        # )
+        # dict_betas["b_UNISTUDENT_HT21"] = Beta(
+        #     "B_UNISTUDENT_HT21", 0, None, None, 0
+        # )
+        # dict_betas["b_UNISTUDENT_V21"] = Beta(
+        #     "B_UNISTUDENT_V21", 0, None, None, 0
+        # )
+        # dict_betas["b_UNISTUDENT_HTV21"] = Beta(
+        #     "B_UNISTUDENT_HTV21", 0, None, None, 0
+        # )
 
         #distance from home to uni, linear
-        dict_betas["b_DIST_H_U_GA21"] = Beta(
-            "B_DIST_H_U_GA21", 0, None, None, 0
-        )
-        dict_betas["b_DIST_H_U_HT21"] = Beta(
-            "B_DIST_H_U_HT21", 0, None, None, 0
-        )
-        dict_betas["b_DIST_H_U_V21"] = Beta(
-            "B_DIST_H_U_V21", 0, None, None, 0
-        )
-        dict_betas["b_DIST_H_U_HTV21"] = Beta(
-            "B_DIST_H_U_HTV21", 0, None, None, 0
-        )
+        # dict_betas["b_DIST_H_U_GA21"] = Beta(
+        #     "B_DIST_H_U_GA21", 0, None, None, 0
+        # )
+        # dict_betas["b_DIST_H_U_HT21"] = Beta(
+        #     "B_DIST_H_U_HT21", 0, None, None, 0
+        # )
+        # dict_betas["b_DIST_H_U_V21"] = Beta(
+        #     "B_DIST_H_U_V21", 0, None, None, 0
+        # )
+        # dict_betas["b_DIST_H_U_HTV21"] = Beta(
+        #     "B_DIST_H_U_HTV21", 0, None, None, 0
+        # )
 
     elif estimate_2015_2021:
         dict_betas["mu_2021"] = Beta("mu_2021", 1.03, None, None, 0)
@@ -1120,31 +1121,31 @@ def get_dict_betas(
             "B_AUSBILDUNG_HTV1521", 0, None, None, 0
         )
 
-        dict_betas["b_UNISTUDENT_GA1521"] = Beta(
-            "B_UNISTUDENT_GA1521", 0, None, None, 0
-        )
-        dict_betas["b_UNISTUDENT_HT1521"] = Beta(
-            "B_UNISTUDENT_HT1521", 0, None, None, 0
-        )
-        dict_betas["b_UNISTUDENT_V1521"] = Beta(
-            "B_UNISTUDENT_V1521", 0, None, None, 0
-        )
-        dict_betas["b_UNISTUDENT_HTV1521"] = Beta(
-            "B_UNISTUDENT_HTV1521", 0, None, None, 0
-        )
+        # dict_betas["b_UNISTUDENT_GA1521"] = Beta(
+        #     "B_UNISTUDENT_GA1521", 0, None, None, 0
+        # )
+        # dict_betas["b_UNISTUDENT_HT1521"] = Beta(
+        #     "B_UNISTUDENT_HT1521", 0, None, None, 0
+        # )
+        # dict_betas["b_UNISTUDENT_V1521"] = Beta(
+        #     "B_UNISTUDENT_V1521", 0, None, None, 0
+        # )
+        # dict_betas["b_UNISTUDENT_HTV1521"] = Beta(
+        #     "B_UNISTUDENT_HTV1521", 0, None, None, 0
+        # )
 
         #distance from home to uni, linear
-        dict_betas["b_DIST_H_U_GA1521"] = Beta(
-            "B_DIST_H_U_GA1521", 0, None, None, 0
-        )
-        dict_betas["b_DIST_H_U_HT1521"] = Beta(
-            "B_DIST_H_U_HT1521", 0, None, None, 0
-        )
-        dict_betas["b_DIST_H_U_V1521"] = Beta(
-            "B_DIST_H_U_V1521", 0, None, None, 0
-        )
-        dict_betas["b_DIST_H_U_HTV1521"] = Beta(
-            "B_DIST_H_U_HTV1521", 0, None, None, 0
-        )
+        # dict_betas["b_DIST_H_U_GA1521"] = Beta(
+        #     "B_DIST_H_U_GA1521", 0, None, None, 0
+        # )
+        # dict_betas["b_DIST_H_U_HT1521"] = Beta(
+        #     "B_DIST_H_U_HT1521", 0, None, None, 0
+        # )
+        # dict_betas["b_DIST_H_U_V1521"] = Beta(
+        #     "B_DIST_H_U_V1521", 0, None, None, 0
+        # )
+        # dict_betas["b_DIST_H_U_HTV1521"] = Beta(
+        #     "B_DIST_H_U_HTV1521", 0, None, None, 0
+        # )
 
     return dict_betas

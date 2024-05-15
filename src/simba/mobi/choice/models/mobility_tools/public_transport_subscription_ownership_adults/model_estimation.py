@@ -274,12 +274,34 @@ def estimate_model(df, output_directory) -> None:
             )
         )
     else:
+        print("Estimating model for 2015")
+
+        V_1cut = [ 'HT', 'V', 'HTV', ]
+
         formula_dist_H_U_15 = {k: models.piecewiseFormula(
                                 dist_home_uni15,
-                                [None, 7500, None],
+                                [None, 0.5, None],
                                 betas=[dict_betas[f"beta_DIST_H_U_cut1_{k}15"], dict_betas[f"beta_DIST_H_U_cut2_{k}15"], #dict_betas[f"beta_DIST_H_U_cut3_{k}15"]
                                 ],
-                            ) for k in V_options}
+                            ) for k in V_1cut}
+        formula_dist_H_U_15['GA'] = models.piecewiseFormula(
+                                dist_home_uni15,
+                                [None, 0.5, 2,  None],
+                                betas=[dict_betas[f"beta_DIST_H_U_cut1_GA15"], dict_betas[f"beta_DIST_H_U_cut2_GA15"], dict_betas[f"beta_DIST_H_U_cut3_GA15"]
+                                ],
+                            )
+        formula_dist_H_U_21 = {k: models.piecewiseFormula(
+                                dist_home_uni21,
+                                [None, 0.5, None],
+                                betas=[dict_betas[f"beta_DIST_H_U_cut1_{k}21"], dict_betas[f"beta_DIST_H_U_cut2_{k}21"], #dict_betas[f"beta_DIST_H_U_cut3_{k}21"]
+                                ],
+                            ) for k in V_1cut}
+        formula_dist_H_U_21['GA'] = models.piecewiseFormula(
+                                dist_home_uni21,
+                                [None, 0.75, 2,  None],
+                                betas=[dict_betas[f"beta_DIST_H_U_cut1_GA21"], dict_betas[f"beta_DIST_H_U_cut2_GA21"], dict_betas[f"beta_DIST_H_U_cut3_GA21"]
+                                ],
+                            )
 
         V_NONE = (
             dict_betas["ASC_NONE"]
@@ -305,7 +327,7 @@ def estimate_model(df, output_directory) -> None:
             + dict_betas["b_PARTTIME_GA15"] * part_time15
              + dict_betas["b_AUSBILDUNG_GA15"] * ausbildung15
             # + dict_betas["b_UNISTUDENT_GA15"] * unistudent15
-            # # + dict_betas["b_DIST_H_U_GA15"] * dist_home_uni15
+            # + dict_betas["b_DIST_H_U_GA15"] * dist_home_uni15
             + formula_dist_H_U_15['GA']
             + dict_betas["b_AGE_18_22_GA15"] * bioMax(0.0, bioMin(age15, 22.5))
             + dict_betas["b_AGE_23_26_GA15"] * bioMax(0.0, bioMin((age15 - 22.5), 4.0))
@@ -327,7 +349,8 @@ def estimate_model(df, output_directory) -> None:
                 + dict_betas["b_PARTTIME_GA21"] * part_time21
                  + dict_betas["b_AUSBILDUNG_GA21"] * ausbildung21
                 # + dict_betas["b_UNISTUDENT_GA21"] * unistudent21
-                # # + dict_betas["b_DIST_H_U_GA21"] * dist_home_uni21
+                # + dict_betas["b_DIST_H_U_GA21"] * dist_home_uni21
+                + formula_dist_H_U_21['GA']
                 + dict_betas["b_AGE_18_22_GA21"] * bioMax(0.0, bioMin(age21, 22.5))
                 + dict_betas["b_AGE_23_26_GA21"]
                 * bioMax(0.0, bioMin((age21 - 22.5), 4.0))
@@ -356,7 +379,7 @@ def estimate_model(df, output_directory) -> None:
             + dict_betas["b_PARTTIME_HT_ALL15"] * part_time15
              + dict_betas["b_AUSBILDUNG_HT15"] * ausbildung15
             # + dict_betas["b_UNISTUDENT_HT15"] * unistudent15
-            # # + dict_betas["b_DIST_H_U_HT15"] * dist_home_uni15
+            # + dict_betas["b_DIST_H_U_HT15"] * dist_home_uni15
             + formula_dist_H_U_15['HT']
             + dict_betas["b_AGE_18_22_HT15"] * bioMax(0.0, bioMin(age15, 22.5))
             + dict_betas["b_AGE_23_26_HT15"] * bioMax(0.0, bioMin((age15 - 22.5), 4.0))
@@ -379,7 +402,8 @@ def estimate_model(df, output_directory) -> None:
                 + dict_betas["b_PARTTIME_HT_ALL21"] * part_time21
                  + dict_betas["b_AUSBILDUNG_HT21"] * ausbildung21
                 # + dict_betas["b_UNISTUDENT_HT21"] * unistudent21
-                # # + dict_betas["b_DIST_H_U_HT21"] * dist_home_uni21
+                # + dict_betas["b_DIST_H_U_HT21"] * dist_home_uni21
+                + formula_dist_H_U_21['HT']
                 + dict_betas["b_AGE_18_22_HT21"] * bioMax(0.0, bioMin(age21, 22.5))
                 + dict_betas["b_AGE_23_26_HT21"]
                 * bioMax(0.0, bioMin((age21 - 22.5), 4.0))
@@ -406,7 +430,7 @@ def estimate_model(df, output_directory) -> None:
             + dict_betas["b_PARTTIME_V15"] * part_time15
              + dict_betas["b_AUSBILDUNG_V15"] * ausbildung15
             # + dict_betas["b_UNISTUDENT_V15"] * unistudent15
-            # # + dict_betas["b_DIST_H_U_V15"] * dist_home_uni15
+            # + dict_betas["b_DIST_H_U_V15"] * dist_home_uni15
             + formula_dist_H_U_15['V']
             + dict_betas["b_LANG_GERMAN_V15"] * german15
             + dict_betas["b_is_swiss_V15"] * is_swiss15
@@ -430,7 +454,8 @@ def estimate_model(df, output_directory) -> None:
                 + dict_betas["b_PARTTIME_V21"] * part_time21
                  + dict_betas["b_AUSBILDUNG_V21"] * ausbildung21
                 # + dict_betas["b_UNISTUDENT_V21"] * unistudent21
-                # # + dict_betas["b_DIST_H_U_V21"] * dist_home_uni21
+                # + dict_betas["b_DIST_H_U_V21"] * dist_home_uni21
+                + formula_dist_H_U_21['V']
                 + dict_betas["b_LANG_GERMAN_V21"] * german21
                 + dict_betas["b_is_swiss_V21"] * is_swiss21
                 + dict_betas["b_URBAN_V_ALL21"] * urban21
@@ -464,7 +489,7 @@ def estimate_model(df, output_directory) -> None:
             + dict_betas["b_PARTTIME_HT_ALL15"] * part_time15
              + dict_betas["b_AUSBILDUNG_HTV15"] * ausbildung15
             # + dict_betas["b_UNISTUDENT_HTV15"] * unistudent15
-            # # + dict_betas["b_DIST_H_U_HTV15"] * dist_home_uni15
+            # + dict_betas["b_DIST_H_U_HTV15"] * dist_home_uni15
             + formula_dist_H_U_15['HTV']
             + dict_betas["b_URBAN_V_ALL15"] * urban15
             + dict_betas["b_AGE_18_22_HTV15"] * bioMax(0.0, bioMin(age15, 22.5))
@@ -492,7 +517,8 @@ def estimate_model(df, output_directory) -> None:
                 + dict_betas["b_PARTTIME_HT_ALL21"] * part_time21
                  + dict_betas["b_AUSBILDUNG_HTV21"] * ausbildung21
                 # + dict_betas["b_UNISTUDENT_HTV15"] * unistudent21
-                # # + dict_betas["b_DIST_H_U_HTV21"] * dist_home_uni21
+                # + dict_betas["b_DIST_H_U_HTV21"] * dist_home_uni21
+                + formula_dist_H_U_21['HTV']
                 + dict_betas["b_URBAN_V_ALL21"] * urban21
                 + dict_betas["b_AGE_18_22_HTV21"] * bioMax(0.0, bioMin(age21, 22.5))
                 + dict_betas["b_AGE_23_26_HTV21"]
@@ -526,10 +552,10 @@ def estimate_model(df, output_directory) -> None:
     if os.path.isdir(output_directory_for_a_specific_year) is False:
         output_directory_for_a_specific_year.mkdir(parents=True, exist_ok=True)
     the_biogeme = bio.BIOGEME(database, logprob)
-    the_biogeme.modelName = "dcm_indivPT_distv07"
+    the_biogeme.modelName = "dcm_indivPT_BUGdist04"
 
     # Calculate the null log likelihood for reporting.
     the_biogeme.calculateNullLoglikelihood(av)
     results = estimate_in_directory(the_biogeme, output_directory_for_a_specific_year)
     df_parameters = results.getEstimatedParameters()
-    df_parameters.to_csv("parameters_dcm_pt_abo_distv07.csv")
+    df_parameters.to_csv("parameters_dcm_pt_abo_BUGdist04.csv")
