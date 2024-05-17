@@ -1,5 +1,11 @@
 from pathlib import Path
 
+from simba.mobi.choice.models.mobility_tools.public_transport_subscription_ownership_adults.calibrate_the_constants import (
+    calibrate_the_constant_by_simulating_on_microcensus,
+)
+from simba.mobi.choice.models.mobility_tools.public_transport_subscription_ownership_adults.calibrate_the_constants import (
+    calibrate_the_constant_by_simulating_on_synthetic_population,
+)
 from simba.mobi.choice.models.mobility_tools.public_transport_subscription_ownership_adults.data_loader import (
     get_data,
 )
@@ -11,6 +17,9 @@ from simba.mobi.choice.models.mobility_tools.public_transport_subscription_owner
 )
 from simba.mobi.choice.models.mobility_tools.public_transport_subscription_ownership_adults.model_estimation import (
     estimate_model,
+)
+from simba.mobi.choice.models.mobility_tools.public_transport_subscription_ownership_adults.validate_model_with_synpop import (
+    validate_model_with_syn_pop_2022,
 )
 
 
@@ -30,7 +39,13 @@ def public_transport_subscription_ownership() -> None:
     output_directory.mkdir(parents=True, exist_ok=True)
     estimate_model(df_zp, output_directory)
     visualize_piecewise_age(output_directory)
-    distribution_half_fare_regional_travelcards(path_to_mtmc)
+    # calibrate_the_constant_by_simulating_on_microcensus(input_directory, df_zp)
+    validate_model_with_syn_pop_2022(
+        input_directory, output_directory, path_to_mobi_zones
+    )
+    calibrate_the_constant_by_simulating_on_synthetic_population(
+        input_directory, output_directory
+    )
 
 
 if __name__ == "__main__":

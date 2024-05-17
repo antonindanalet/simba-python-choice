@@ -454,9 +454,9 @@ def estimate_model(df, output_directory) -> None:
         )
 
     V = {1: V_NONE, 2: V_GA, 3: V_HT, 4: V_V, 5: V_HTV}
-    av = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
+    availability_conditions = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
 
-    logprob = models.loglogit(V, av, subscriptions)
+    logprob = models.loglogit(V, availability_conditions, subscriptions)
 
     if estimate_2015:
         output_directory_for_a_specific_year = output_directory / "2015"
@@ -470,4 +470,12 @@ def estimate_model(df, output_directory) -> None:
     the_biogeme.modelName = "dcm_indivPT"
 
     # Calculate the null log likelihood for reporting.
-    the_biogeme.calculateNullLoglikelihood(av)
+    the_biogeme.calculateNullLoglikelihood(availability_conditions)
+
+    results = estimate_in_directory(the_biogeme, output_directory_for_a_specific_year)
+
+    df_parameters = results.getEstimatedParameters()
+    file_name = (
+        "parameters_dcm_pt_abo_" + datetime.now().strftime("%Y_%m_%d-%H_%M") + ".csv"
+    )
+    df_parameters.to_csv(output_directory_for_a_specific_year / file_name)

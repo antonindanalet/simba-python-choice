@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 from simba.mobi.choice.utils.mobi import add_mobi_variables
-from simba.mobi.choice.utils.mtmc import add_urban_typology
+from simba.mobi.mzmv.utils2015.add_urban_typology import add_urban_typology
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_hh
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_hhp
 from simba.mobi.mzmv.utils_mtmc.get_mtmc_files import get_zp
