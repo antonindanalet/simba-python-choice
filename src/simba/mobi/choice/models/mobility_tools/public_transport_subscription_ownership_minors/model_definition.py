@@ -7,7 +7,7 @@ def define_variables(database: biogeme.database.Database) -> None:
     globals().update(database.variables)
 
     subscriptions = Variable("subscriptions")
-    nb_cars = Variable("nb_cars")
+    nb_of_cars = Variable("nb_of_cars")
     language = Variable("language")
     full_time = Variable("full_time")
     part_time = Variable("part_time")
@@ -35,14 +35,12 @@ def define_variables(database: biogeme.database.Database) -> None:
     age15 = database.DefineVariable("age15", age * year15)
     age21 = database.DefineVariable("age21", age * year21)
 
-    nb_cars_not_NA15 = database.DefineVariable(
-        "nb_cars_not_NA15", ((nb_cars >= 0) * nb_cars) * year15
-    )
-    nb_cars_NA15 = database.DefineVariable("nb_cars_NA15", (nb_cars < 0) * year15)
+    nb_cars_not_NA15 = database.DefineVariable("nb_cars_not_NA15", ((nb_of_cars >= 0) * nb_of_cars) * year15)
+    nb_cars_NA15 = database.DefineVariable("nb_cars_NA15", (nb_of_cars < 0) * year15)
     nb_cars_not_NA21 = database.DefineVariable(
-        "nb_cars_not_NA21", ((nb_cars >= 0) * nb_cars) * year21
+        "nb_cars_not_NA21", ((nb_of_cars >= 0) * nb_of_cars) * year21
     )
-    nb_cars_NA21 = database.DefineVariable("nb_cars_NA21", (nb_cars < 0) * year21)
+    nb_cars_NA21 = database.DefineVariable("nb_cars_NA21", (nb_of_cars < 0) * year21)
 
     german15 = database.DefineVariable("german15", (language == 1) * year15)
     german21 = database.DefineVariable("german21", (language == 1) * year21)

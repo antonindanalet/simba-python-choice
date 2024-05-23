@@ -87,7 +87,6 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
     df_zp = get_zp(year, path_to_mtmc_data, selected_columns=selected_columns)
     df_zp = df_zp.rename(
         columns={
-            "f41610a": "GA_ticket",
             "f41610c": "Verbund_Abo",
             "f41610b": "halbtax_ticket",
             "f41600_01a": "GA_ticket",
@@ -128,26 +127,35 @@ def get_data_per_year(year: int, path_to_mtmc_data: Path) -> pd.DataFrame:
 
 def label_subscriptions(row) -> int:
     # 1: NONE, 2: GA, 3: HT, 4: V, 5: HT + V
-    if row["GA_ticket"] == 1:  # GA
-        if row["halbtax_ticket"] == 1:
+    if row["has_ga"] == 1:  # GA
+        if row["has_hta"] == 1:
             # Warning: Person with GA and HT are considered as "GA"
             return 2
-        elif row["halbtax_ticket"] == 2:  # No HT
+        elif row["has_hta"] == 2:  # No HT
             return 2  # GA (no HT)
+        elif row["has_hta"] == -99:  # age < 16, no HT possible
+            return 2  # GA (no HT, obviously)
         else:
             return -98
-    elif row["GA_ticket"] == 2:  # No GA
-        if row["halbtax_ticket"] == 1:  # HT
-            if row["Verbund_Abo"] == 1:
+    elif row["has_ga"] == 2:  # No GA
+        if row["has_hta"] == 1:  # HT
+            if row["has_va"] == 1:
                 return 5  # HT + Verbundabo (no GA)
-            elif row["Verbund_Abo"] == 2:
+            elif row["has_va"] == 2:
                 return 3  # HT (no GA, no Verbundabo)
             else:  # no info about Verbundabo
                 return -98
-        elif row["halbtax_ticket"] == 2:  # No HT
-            if row["Verbund_Abo"] == 1:
+        elif row["has_hta"] == 2:  # No HT
+            if row["has_va"] == 1:
                 return 4  # Verbundabo (no GA, no HT)
-            elif row["Verbund_Abo"] == 2:
+            elif row["has_va"] == 2:
+                return 1  # no GA, no Verbundabo, no HT
+            else:  # no info about Verbundabo
+                return -98
+        elif row["has_hta"] == -99:  # age < 16, no HT possible
+            if row["has_va"] == 1:
+                return 4  # Verbundabo (no GA, no HT)
+            elif row["has_va"] == 2:
                 return 1  # no GA, no Verbundabo, no HT
             else:  # no info about Verbundabo
                 return -98

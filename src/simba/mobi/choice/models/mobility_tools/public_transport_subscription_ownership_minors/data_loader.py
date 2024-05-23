@@ -47,7 +47,10 @@ def get_data(
         # Remove adults
         df_zp = df_zp[df_zp.age <= 17]
 
-        df_zp["driving_licence"].replace({2: 0}, inplace=True)  # 0: no, 1: yes
+        df_zp["has_driving_licence"].replace({2: 0}, inplace=True)  # 0: no, 1: yes
+
+        # Remove the one person being 12 and having a half fare subscription
+        df_zp = df_zp.loc[(df_zp["HHNR"] != 292694) | (df_zp["year"] != 2015), :]
 
         df_zp.fillna(0, inplace=True)
         df_zp.to_csv(path_to_input / "zp_mtmc_2015_2021.csv", index=False)
