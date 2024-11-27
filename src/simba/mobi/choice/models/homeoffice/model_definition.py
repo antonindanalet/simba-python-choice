@@ -24,7 +24,7 @@ def define_variables(database: pd.DataFrame) -> None:
     executives_1520 = database.DefineVariable(
         "executives_1520", (work_position == 1) * ((year == 2020) + (year == 2015))
     )
-    german = database.DefineVariable("german", language == 1)
+    german_speaking = database.DefineVariable("german_speaking", language == 1)
 
     # household attributes
     single_household = database.DefineVariable("single_household", hh_type == 10)
@@ -52,7 +52,7 @@ def define_variables(database: pd.DataFrame) -> None:
 
     # mobility tools
     general_abo_halbtax = database.DefineVariable(
-        "general_abo_halbtax", (GA_ticket == 1) | (halbtax_ticket == 1)
+        "general_abo_halbtax", (has_ga == 1) | (has_hta == 1)
     )
 
     is_falc_id_6to9_1520 = database.DefineVariable(
@@ -171,7 +171,7 @@ def get_dict_betas() -> dict:
         "scale_2021": Beta("scale_2021", 1, 0.001, None, 0),
         # person attributes
         "b_executives_1520": Beta("b_executives_1520", 0, None, None, 0),
-        "b_german": Beta("b_german", 0, None, None, 0),
+        "b_german_speaking": Beta("b_german_speaking", 0, None, None, 0),
         "b_no_post_school_education": Beta(
             "b_no_post_school_education", 0, None, None, 0
         ),
@@ -189,7 +189,7 @@ def get_dict_betas() -> dict:
         "b_is_agriculture_1_15": Beta("b_is_agriculture_1_15", 0, None, None, 0),
         "b_is_production_1520": Beta("b_is_production_1520", 0, None, None, 0),
         "b_is_wohlesale_1520": Beta("b_is_wohlesale_1520", 0, None, None, 0),
-        "b_is_falc_id_6to9_1520": Beta("b_is_falc_id_6to9_1", 0, None, None, 0),
+        "b_is_falc_id_6to9_1520": Beta("b_is_falc_id_6to9_1520", 0, None, None, 0),
         "b_falc_id_NA": Beta("b_falc_id_NA", 0, None, None, 0),
         # spatial attributes
         "b_rural_work_1520": Beta("b_rural_work_1520", 0, None, None, 0),

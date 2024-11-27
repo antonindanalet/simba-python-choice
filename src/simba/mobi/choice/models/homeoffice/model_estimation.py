@@ -1,4 +1,4 @@
-import os
+from datetime import datetime
 from pathlib import Path
 
 import biogeme.biogeme as bio
@@ -10,6 +10,7 @@ from biogeme.expressions import bioMin
 
 from simba.mobi.choice.models.homeoffice.model_definition import define_variables
 from simba.mobi.choice.models.homeoffice.model_definition import get_dict_betas
+from simba.mobi.choice.utils.biogeme import estimate_in_directory
 
 
 def estimate_choice_model_telecommuting(
@@ -42,7 +43,7 @@ def run_estimation(
         + models.piecewiseFormula(age_1520, [18, 35])
         + models.piecewiseFormula(work_percentage_15, [0, 95, 101])
         + dict_betas["b_executives_1520"] * executives_1520
-        + dict_betas["b_german"] * german
+        + dict_betas["b_german_speaking"] * german_speaking
         + dict_betas["b_no_post_school_education"] * no_post_school_educ
         + dict_betas["b_secondary_education"] * secondary_education
         + dict_betas["b_tertiary_education"] * tertiary_education
@@ -103,10 +104,6 @@ def run_estimation(
     # Choice variable: "telecommuting"
     logprob = models.loglogit(V, av, telecommuting)
 
-    # Change the working directory, so that biogeme writes in the correct folder
-    standard_directory = os.getcwd()
-    os.chdir(output_directory)
-
     # Create the Biogeme object
     the_biogeme = bio.BIOGEME(database, logprob)
     the_biogeme.modelName = "wfh_model_sbb"
@@ -114,11 +111,10 @@ def run_estimation(
     # Calculate the null log likelihood for reporting.
     the_biogeme.calculateNullLoglikelihood(av)
 
-    # Estimate the parameters
-    results = the_biogeme.estimate()
+    results = estimate_in_directory(the_biogeme, output_directory)
 
-    # Get the results in LaTeX
-    # results.writeLaTeX()
-
-    # Go back to the normal working directory
-    os.chdir(standard_directory)
+    df_parameters = results.getEstimatedParameters()
+    file_name = (
+        "parameters_dcm_wfh_" + datetime.now().strftime("%Y_%m_%d-%H_%M") + ".csv"
+    )
+    df_parameters.to_csv(output_directory / file_name)
