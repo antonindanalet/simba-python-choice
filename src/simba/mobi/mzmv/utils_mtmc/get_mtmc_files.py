@@ -90,7 +90,7 @@ def get_generic_names(df_zp: pd.DataFrame, year: int, mtmc_table: str) -> pd.Dat
         dict_mzmv_codes2mobi_names = {
             v: k for k, v in dict_mobi_names2mzmv_codes_2015.items()
         }
-    elif year == 2021:
+    elif (year == 2020) | (year == 2021):
         if mtmc_table == "zp":
             dict_mobi_names2mzmv_codes_2021 = dict_mobi_names2mzmv_codes_zp_2021
         elif mtmc_table == "hh":
@@ -98,10 +98,12 @@ def get_generic_names(df_zp: pd.DataFrame, year: int, mtmc_table: str) -> pd.Dat
         dict_mzmv_codes2mobi_names = {
             v: k for k, v in dict_mobi_names2mzmv_codes_2021.items()
         }
+    else:
+        raise ValueError("Year must be 2015, 2020 or 2021.")
     list_of_column_names = [
         dict_mzmv_codes2mobi_names.get(item, item) for item in list_of_column_names
     ]
-    df_zp.columns = list_of_column_names  # type: ignore
+    df_zp.columns = pd.Index(list_of_column_names)
     if (year == 2015) & (mtmc_table == "zp") & ("f40901_02" in list_of_column_names):
         df_zp = df_zp.rename(
             columns={
