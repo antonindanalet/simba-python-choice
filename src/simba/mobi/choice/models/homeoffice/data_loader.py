@@ -48,19 +48,9 @@ def merge_data_files(df_zp1: pd.DataFrame, df_zp2: pd.DataFrame) -> pd.DataFrame
 
 def get_data_per_year(year: int) -> pd.DataFrame:
     # Input daten
-    path_to_mobi_server = Path(r"\\wsbbrz0283\mobi")
-    path_to_mobi_zones = (
-        path_to_mobi_server / r"50_Ergebnisse\MOBi_3.1\plans\3.1.4.2020"
-    )
-    path_to_npvm_zones = (
-        path_to_mobi_server.joinpath("10_Daten")
-        .joinpath("NPVM_Zonen")
-        .joinpath("Verkehrszonen_Schweiz_NPVM_2017")
-        .joinpath("Verkehrszonen_Schweiz_NPVM_2017_zone_id.gpkg")
-    )
-    path_to_skim_file = (
-        path_to_mobi_server / r"50_Ergebnisse/MOBi_3.2/plans/3.2_2017_10pct/"
-    )
+    path_to_mobi_zones = (r"path_to_mobi_zones")
+    path_to_npvm_zones = (r"path_to_npvm_zones")
+    path_to_skim_file = (r"path_to_skim_file")
 
     # Generate the data
     df_zp = generate_data_file(
