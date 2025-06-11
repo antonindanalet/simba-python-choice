@@ -129,7 +129,7 @@ def get_mzmv_codes(
     selected_columns: List[str], year: int, mtmc_table: str
 ) -> List[str]:
     """Translates generic codes (e.g. "has_ga") into the name of the variable in the MTMC, depending on the year.
-    If the original name of the MTMV variable is used, it stays as it is.
+    If the original name of the MTMC variable is used, it stays as it is.
     If a generic name is used, it is replaces by the name of the variable for this year."""
     if year == 2015:
         if mtmc_table == "zp":
@@ -142,7 +142,7 @@ def get_mzmv_codes(
         selected_columns = [
             dict_mobi_names2mzmv_codes_2015.get(item, item) for item in selected_columns
         ]
-    elif year == 2021:
+    elif (year == 2020) | (year == 2021):
         if mtmc_table == "zp":
             dict_mobi_names2mzmv_codes_2021 = dict_mobi_names2mzmv_codes_zp_2021
         elif mtmc_table == "hh":
